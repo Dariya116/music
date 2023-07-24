@@ -1,0 +1,219 @@
+.btn {
+  cursor: pointer;
+}
+
+.btn_icon:hover svg {
+  fill: transparent;
+  stroke: #ACACAC;
+  cursor: pointer;
+}
+
+.btn_icon:active svg {
+  fill: transparent;
+  stroke: #FFFFFF;
+  cursor: pointer;
+}
+
+.btn_icon:active .track-play__like-svg,
+.btn_icon:active .track-play__dislike-svg {
+  fill: #696969;
+  stroke: #FFFFFF;
+  cursor: pointer;
+}
+
+.bar {
+  width: 100%;
+  background: rgba(28, 28, 28, 0.5);
+}
+.bar__content {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.bar__player_progress {
+  width: 100%;
+  height: 5px;
+  background: #2E2E2E;
+}
+.bar__player_block {
+  height: 73px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.player {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.player__controls {
+  display: flex;
+  flex-direction: row;
+  padding: 0 27px 0 31px;
+}
+.player__btn_prev {
+  margin-right: 23px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+.player__btn_prev_svg {
+  width: 15px;
+  height: 14px;
+}
+.player__btn_play {
+  margin-right: 23px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+.player__btn_play_svg {
+  width: 22px;
+  height: 20px;
+  fill: #D9D9D9;
+}
+.player__btn_next {
+  margin-right: 28px;
+  fill: #a53939;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+.player__btn_next_svg {
+  width: 15px;
+  height: 14px;
+  fill: inherit;
+  stroke: #D9D9D9;
+}
+.player__btn_repeat {
+  margin-right: 24px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+.player__btn_repeat_svg {
+  width: 18px;
+  height: 12px;
+  fill: transparent;
+  stroke: #696969;
+}
+.player__btn_shuffle {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+.player__btn_shuffle_svg {
+  width: 19px;
+  height: 12px;
+  fill: transparent;
+  stroke: #696969;
+}
+
+.track_play {
+  display: flex;
+  flex-direction: row;
+}
+.track_play__contain {
+  width: auto;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "image author" "image album";
+  align-items: center;
+}
+.track_play__image {
+  width: 51px;
+  height: 51px;
+  background-color: #313131;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  grid-area: image;
+}
+.track_play__svg {
+  width: 18px;
+  height: 17px;
+  fill: transparent;
+  stroke: #4E4E4E;
+}
+.track_play__author {
+  grid-area: author;
+  min-width: 49px;
+}
+.track_play__author_link {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+.track_play__album {
+  grid-area: album;
+  min-width: 49px;
+}
+.track_play__album_link {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 24px;
+  color: #FFFFFF;
+}
+.track_play__like_dis {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 26%;
+}
+.track_play__like, .track_play__dislike {
+  padding: 5px;
+}
+.track_play__like_svg {
+  width: 14px;
+  height: 12px;
+  fill: transparent;
+  stroke: #696969;
+}
+.track_play__dislike {
+  margin-left: 28.5px;
+}
+.track_play__dislike_svg {
+  width: 14.34px;
+  height: 13px;
+  fill: transparent;
+  stroke: #696969;
+}
+
+.volume {
+  width: auto;
+  display: flex;
+  align-items: center;
+  padding: 0 92px 0 0;
+}
+.volume__content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+}
+.volume__image {
+  width: 13px;
+  height: 18px;
+  margin-right: 17px;
+}
+.volume__svg {
+  width: 13px;
+  height: 18px;
+  fill: transparent;
+}
+.volume__progress {
+  width: 109px;
+}
+.volume__progress_line {
+  width: 109px;
+}/*# sourceMappingURL=Bar.module.css.map */
