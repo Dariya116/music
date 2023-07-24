@@ -1,26 +1,109 @@
+import React from "react";
+
 import Track from "./components/Track";
 import Nav from "./components/Nav";
-function App() {
+import Search from "./components/Search";
+import Bar from "./components/Bar";
+import MyLoader from "./components/MyLoader";
+import MyLoaderRight from "./components/MyLoaderRight";
+
+export default function  App() {
+
+    const [loader, setLoader] = React.useState(true);
+   
+    const loaderTest = () => {
+        
+
+        setTimeout(() => {
+            setLoader(!true);
+        }, 2000);
+
+    };
+
+    const [musicFilter, setMusicFilter] = React.useState(false);
+
+    const musicFilterClick = () => {
+        setMusicFilter(!musicFilter);
+        setMusicStyle(false);
+        setMusicYear(false);
+    };
+    const [musicYear, setMusicYear] = React.useState(false);
+
+    const musicYearClick = () => {
+        setMusicYear(!musicYear);
+        setMusicStyle(false);
+        setMusicFilter(false);
+    };
+
+    const [musicStyle, setMusicStyle] = React.useState(false);
+
+    const musicStyleClick = () => {
+        setMusicStyle(!musicStyle);
+        setMusicYear(false);
+        setMusicFilter(false);
+    };
+    
   return (
+
+    
+
     <div className="wrapper">
-        <div classNameName="container">
-            <main classNameName="main">
+        <div className="container">
+            <main className="main">
                 <Nav />
                 <div className="main">
                 <div className="main__centerblock centerblock">
-                    <div className="centerblock__search search">
-                        <svg className="search__svg">
-                            <use xlinkHref="img/icon/sprite.svg#icon-search"></use>
-                        </svg>
-                        <input className="search__text" type="search" placeholder="Поиск" name="search" />
-                    </div>
+                    <Search />
+
                     <h2 className="centerblock__h2">Треки</h2>
+
+                   
                     <div className="centerblock__filter filter">
+                    
                         <div className="filter__title">Искать по:</div>
-                        <div className="filter__button button-author _btn-text">исполнителю</div>
-                        <div className="filter__button button-year _btn-text">году выпуска</div>
-                        <div className="filter__button button-genre _btn-text">жанру</div>
+                        
+                        <div className="filter__choice">
+                        <div className="filter__button button-author _btn-text" onClick={() =>  musicFilterClick()}>исполнителю</div>
+                         {musicFilter && ( 
+                            <ul className="filter__menu">
+                                <li className="filter__item"><a href="http://" className="filter__link">исполнитель 1</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">исполнитель 1</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">исполнитель 1</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">исполнитель 1</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">исполнитель 1</a></li>
+                               
+                            </ul>
+                         )} 
+                        </div>
+                        <div className="filter__choice">
+                        <div className="filter__button button-author _btn-text" onClick={() =>  musicYearClick()}>год выпуска</div>
+                         {musicYear && ( 
+                            <ul className="filter__menu">
+                                <li className="filter__item"><a href="http://" className="filter__link">2000</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">2000</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">2000</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">2000</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">2000</a></li>
+                               
+                            </ul>
+                         )} 
+                        </div>
+                        
+                        <div className="filter__choice">
+                        <div className="filter__button button-year _btn-text" onClick={() =>  musicStyleClick()}>жанру</div>
+                        {musicStyle && ( 
+                            <ul className="filter__menu">
+                                <li className="filter__item"><a href="http://" className="filter__link">жанр</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">жанр</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">жанр</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">жанр</a></li>
+                                <li className="filter__item"><a href="http://" className="filter__link">жанр</a></li>
+                               
+                            </ul>
+                         )} 
+                         </div>
                     </div>
+                    
                     <div className="centerblock__content">
                         <div className="content__title playlist-title">
                             <div className="playlist-title__col col01">Трек</div>
@@ -33,16 +116,12 @@ function App() {
                             </div>
                         </div>
                         <div className="content__playlist playlist">
-                         
-                            <Track />
-                            <Track />
-                            <Track />
-                            <Track />
-                            <Track />
-                            <Track />
-                            <Track />
-                            <Track />
-                            <Track />
+                         {loaderTest()} 
+                        {loader ? <MyLoader/> : <><Track /><Track /><Track /><Track /><Track /><Track /><Track /><Track /><Track /><Track /><Track /></>}
+
+                        
+                        
+                            
                         </div>                        
                     </div>
                 </div>
@@ -54,8 +133,12 @@ function App() {
                             
                         </div>
                 </div>
+                
                     </div>
-                    <div className="sidebar__block">
+                    {loaderTest()} 
+                        {loader ? <MyLoaderRight/> :
+                     
+                        (<div className="sidebar__block">
                         <div className="sidebar__list">
                             <div className="sidebar__item">
                                 <a className="sidebar__link" href="#">
@@ -73,92 +156,19 @@ function App() {
                                 </a>
                             </div>
                         </div>
-                    </div>
+                    </div>) 
+                     
+                        }
                     </div>
                 </div>
             </main>
             <div className="bar">
-                <div className="bar__content">
-                    <div className="bar__player-progress"></div>
-                    <div className="bar__player-block">
-                        <div className="bar__player player">
-                            <div className="player__controls">
-                                <div className="player__btn-prev">
-                                    <svg className="player__btn-prev-svg" alt="prev">
-                                        <use xlinkHref="img/icon/sprite.svg#icon-prev"></use>
-                                    </svg>
-                                </div>
-                                <div className="player__btn-play _btn">
-                                    <svg className="player__btn-play-svg" alt="play">
-                                        <use xlinkHref="img/icon/sprite.svg#icon-play"></use>
-                                    </svg>
-                                </div>
-                                <div className="player__btn-next">
-                                    <svg className="player__btn-next-svg" alt="next">
-                                        <use xlinkHref="img/icon/sprite.svg#icon-next"></use>
-                                    </svg>
-                                </div>
-                                <div className="player__btn-repeat _btn-icon">
-                                    <svg className="player__btn-repeat-svg" alt="repeat">
-                                        <use xlinkHref="img/icon/sprite.svg#icon-repeat"></use>
-                                    </svg>
-                                </div>
-                                <div className="player__btn-shuffle _btn-icon">
-                                    <svg className="player__btn-shuffle-svg" alt="shuffle">
-                                        <use xlinkHref="img/icon/sprite.svg#icon-shuffle"></use>
-                                    </svg>
-                                </div>
-                            </div>
-                            
-                            <div className="player__track-play track-play">
-                                <div className="track-play__contain">
-                                    <div className="track-play__image">
-                                        <svg className="track-play__svg" alt="music">
-                                            <use xlinkHref="img/icon/sprite.svg#icon-note"></use>
-                                        </svg>
-                                    </div>
-                                    <div className="track-play__author">
-                                        <a className="track-play__author-link" href="http://">Ты та...</a>
-                                    </div>
-                                    <div className="track-play__album">
-                                        <a className="track-play__album-link" href="http://">Баста</a>
-                                    </div>
-                                </div>
-
-                                <div className="track-play__like-dis">
-                                    <div className="track-play__like _btn-icon">
-                                        <svg className="track-play__like-svg" alt="like">
-                                            <use xlinkHref="img/icon/sprite.svg#icon-like"></use>
-                                        </svg>
-                                    </div>
-                                    <div className="track-play__dislike _btn-icon">
-                                        <svg className="track-play__dislike-svg" alt="dislike">
-                                            <use xlinkHref="img/icon/sprite.svg#icon-dislike"></use>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="bar__volume-block volume">
-                           <div className="volume__content">
-                                <div className="volume__image">
-                                    <svg className="volume__svg" alt="volume">
-                                        <use xlinkHref="img/icon/sprite.svg#icon-volume"></use>
-                                    </svg>
-                                </div>
-                                <div className="volume__progress _btn">
-                                    <input className="volume__progress-line _btn" type="range" name="range" />
-                                </div>
-                                
-                           </div>
-                        </div>
-                    </div>
-                </div>
+                <Bar />   
             </div>
             <footer className="footer"></footer>
         </div>
     </div>
   );
-}
+};
 
-export default App;
+

@@ -23,6 +23,7 @@ button,
 
 ul li {
   list-style: none;
+  text-decoration: none;
 }
 
 @font-face {
@@ -88,7 +89,6 @@ body {
 .main {
   flex: 1 1 auto;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
 }
 .main__nav {
@@ -223,6 +223,43 @@ body {
   font-size: 16px;
   line-height: 24px;
   margin-right: 15px;
+}
+.filter__choice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.filter__menu {
+  position: absolute;
+  margin-top: 50px;
+  width: 248px;
+  height: 305px;
+  background-color: #313131;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 5%;
+  overflow-y: scroll;
+  border: 20px solid transparent;
+}
+.filter__menu::-webkit-scrollbar {
+  width: 5px;
+  background-color: #202020;
+}
+.filter__menu::-webkit-scrollbar-thumb {
+  background-color: #FFFFFF;
+}
+.filter__link {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: white;
+  cursor: pointer;
+}
+.filter__link:hover {
+  color: #AD61FF;
+  text-decoration-line: underline;
 }
 .filter__button {
   font-style: normal;
