@@ -1,16 +1,17 @@
-import React from "react"
+
 import ContentLoader from "react-content-loader"
 
-const MyLoader = (props) => (
-   
+function MyLoader() {
+
+  return (
   <ContentLoader 
     speed={2}
     width={1136}
-    height={673}
+    height={741}
     viewBox="0 0 1136 673"
     backgroundColor="#5e5e5e"
     foregroundColor="#ecebeb"
-    {...props}
+  
   >
      <rect x="0" y="0" rx="4" ry="4" width="40" height="40" />
       <rect x="100" y="7" rx="10" ry="10" width="185" height="19" />
@@ -81,6 +82,7 @@ const MyLoader = (props) => (
     
 
   </ContentLoader>
-)
+  )
+}
 
 export default MyLoader

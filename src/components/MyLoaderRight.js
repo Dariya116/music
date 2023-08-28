@@ -1,8 +1,8 @@
-import React from "react"
+
 import ContentLoaderRight from "react-content-loader"
 
-const MyLoaderRight = (props) => (
-   
+function MyLoaderRight () {
+   return (
   <ContentLoaderRight 
     speed={2}
     width={1500}
@@ -10,7 +10,7 @@ const MyLoaderRight = (props) => (
     viewBox="0 0 1500 1500"
     backgroundColor="#5e5e5e"
     foregroundColor="#ecebeb"
-    {...props}
+   
   >
      
 
@@ -21,7 +21,8 @@ const MyLoaderRight = (props) => (
     
 
   </ContentLoaderRight>
-)
+   )
+}
 
 export default MyLoaderRight
 
