@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import styles from "./home.module.scss";
 
@@ -12,13 +12,15 @@ import MyLoaderRight from "../../components/MyLoaderRight";
 
 
 function Home() {
-    
-
-
-    
-
+    const navigate = useNavigate();
+    if (Object.keys(sessionStorage).length === 0) {
+        navigate("/login");
+    } 
     const [loader, setLoader] = React.useState(true);
-   
+    
+    
+
+
     const loaderTest = () => {
         
 
@@ -54,6 +56,7 @@ function Home() {
     };
 
   return (
+    
     <div className={styles.container}>
        
             <main className={styles.main}>

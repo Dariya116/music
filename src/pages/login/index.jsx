@@ -9,7 +9,7 @@ function Login () {
   const [passwordToLogin, setPasswordToLogin] =useState("");
 
   const verificationLogin = () => {
-    if (loginToLogin === localStorage.getItem("login") && passwordToLogin === localStorage.getItem("password")) {
+    if (loginToLogin === sessionStorage.getItem("login") && passwordToLogin === sessionStorage.getItem("password")) {
       navigate("/");
   } else {
     alert("Проверьте логин и пароль!")
