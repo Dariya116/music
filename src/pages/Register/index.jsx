@@ -13,8 +13,8 @@ function Register () {
 
 const sendLogin = () => {
 if(password === returnPassword) {
-  sessionStorage.setItem("login", login);
-  sessionStorage.setItem("password", password);
+  localStorage.setItem("login", login);
+  localStorage.setItem("password", password);
 navigate("/login");
 } else {
   alert("Проверьте пароль!")

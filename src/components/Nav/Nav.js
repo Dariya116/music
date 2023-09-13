@@ -37,7 +37,7 @@ export default function Nav() {
             <ul className={styles.menu__list}>
                 <li className={styles.menu__item}><Link to="/" className={styles.menu__link}>Главное</Link> </li>
                 <li className={styles.menu__item}><Link to="/favorites" className={styles.menu__link}>Мой плейлист</Link> </li>
-                <li className={styles.menu__item}><Link onClick={() => sessionStorage.clear()} to="/register" className={styles.menu__link}>Выйти</Link> </li>
+                <li className={styles.menu__item}><Link onClick={() => localStorage.clear()} to="/register" className={styles.menu__link}>Выйти</Link> </li>
             </ul>
             </div>)
         } 

@@ -12,10 +12,11 @@ import MyLoaderRight from "../../components/MyLoaderRight";
 
 
 function Home() {
-    const navigate = useNavigate();
-    if (Object.keys(sessionStorage).length === 0) {
-        navigate("/login");
-    } 
+   
+    
+    
+    
+    
     const [loader, setLoader] = React.useState(true);
     
     
