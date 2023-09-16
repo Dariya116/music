@@ -11,19 +11,17 @@ function Login ({setLoggedIn}) {
 
  
   const [loginToLogin, setLoginToLogin] =useState("");
-  const [passwordToLogin, setPasswordToLogin] =useState("");
+ 
 
   const verificationLogin = () => {
     
   
     
-    if (loginToLogin === localStorage.getItem("login") && passwordToLogin === localStorage.getItem("password")) {
+    if (loginToLogin) {
      setLoggedIn(true);
      localStorage.setItem("loggedIn", true);
       
-  } else {
-    alert("Проверьте логин и пароль!")
-  }
+  } 
 }
 
   return (
@@ -37,8 +35,8 @@ function Login ({setLoggedIn}) {
         value={loginToLogin}
         onChange={(e) => setLoginToLogin(e.target.value)} placeholder="Почта"/>
       <input type="password"
-        value={passwordToLogin}
-        onChange={(e) => setPasswordToLogin(e.target.value)} placeholder="Пароль"/>
+        // value={passwordToLogin}
+        placeholder="Пароль"/>
       <button onClick={() => verificationLogin()} className={styles.login__button1} type="button">Войти</button>
       <Link to="/register"><button className={styles.login__button2} type="button">Зарегестрироваться</button></Link>
     </form>

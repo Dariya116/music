@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import styles from "./home.module.scss";
 
@@ -11,7 +11,7 @@ import Bar from "../../components/Bar/Bar";
 import MyLoaderRight from "../../components/MyLoaderRight";
 
 
-function Home() {
+function Home({setLoggedIn}) {
    
     
     
@@ -62,7 +62,7 @@ function Home() {
        
             <main className={styles.main}>
             
-                <Nav />
+                <Nav setLoggedIn={setLoggedIn}/>
                     
 
                 <div className={styles.main}>

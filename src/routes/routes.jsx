@@ -16,7 +16,7 @@ import NotFound from "../pages/notFound";
 function  AppRoutes() {
     
     const [isLoggedIn, setLoggedIn] = React.useState(
-        localStorage.getItem("isLoggedIn") || false
+        localStorage.getItem("isLoggedIn") || false,
       );
     
     return (
@@ -33,7 +33,7 @@ function  AppRoutes() {
       <Route
         path="/"
         element={
-          isLoggedIn ? <Home /> : <Navigate to="/login" replace />
+          isLoggedIn ? <Home setLoggedIn={setLoggedIn}/> : <Navigate to="/login" replace />
         }
       />
     

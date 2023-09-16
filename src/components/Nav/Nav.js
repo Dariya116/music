@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 
 import { Link } from 'react-router-dom';
@@ -8,12 +9,20 @@ import styles from "./Nav.module.scss";
 
 
 
-export default function Nav() {
+export default function Nav({setLoggedIn}) {
     const [burger, setBurger] = React.useState(false);
+  
    
     const navBurger = () => {
         setBurger(!burger)
     }
+
+
+   
+
+     
+
+
     
     
     
@@ -37,7 +46,7 @@ export default function Nav() {
             <ul className={styles.menu__list}>
                 <li className={styles.menu__item}><Link to="/" className={styles.menu__link}>Главное</Link> </li>
                 <li className={styles.menu__item}><Link to="/favorites" className={styles.menu__link}>Мой плейлист</Link> </li>
-                <li className={styles.menu__item}><Link onClick={() => localStorage.clear()} to="/register" className={styles.menu__link}>Выйти</Link> </li>
+                <li className={styles.menu__item}><Link  onClick={() => setLoggedIn(false)} to="/login"  className={styles.menu__link}>Выйти</Link> </li>
             </ul>
             </div>)
         } 
