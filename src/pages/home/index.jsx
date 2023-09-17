@@ -11,7 +11,7 @@ import Bar from "../../components/Bar/Bar";
 import MyLoaderRight from "../../components/MyLoaderRight";
 
 
-function Home({setLoggedIn}) {
+function Home({setUser}) {
    
     
     
@@ -62,7 +62,7 @@ function Home({setLoggedIn}) {
        
             <main className={styles.main}>
             
-                <Nav setLoggedIn={setLoggedIn}/>
+                <Nav setUser={setUser}/>
                     
 
                 <div className={styles.main}>

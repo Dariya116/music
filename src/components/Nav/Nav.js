@@ -9,7 +9,7 @@ import styles from "./Nav.module.scss";
 
 
 
-export default function Nav({setLoggedIn}) {
+export default function Nav({setUser}) {
     const [burger, setBurger] = React.useState(false);
   
    
@@ -46,7 +46,7 @@ export default function Nav({setLoggedIn}) {
             <ul className={styles.menu__list}>
                 <li className={styles.menu__item}><Link to="/" className={styles.menu__link}>Главное</Link> </li>
                 <li className={styles.menu__item}><Link to="/favorites" className={styles.menu__link}>Мой плейлист</Link> </li>
-                <li className={styles.menu__item}><Link  onClick={() => setLoggedIn(false)} to="/login"  className={styles.menu__link}>Выйти</Link> </li>
+                <li className={styles.menu__item}><Link  onClick={() => setUser(false)} to="/login"  className={styles.menu__link}>Выйти</Link> </li>
             </ul>
             </div>)
         } 

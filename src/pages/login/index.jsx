@@ -5,7 +5,7 @@ import styles from "./login.module.scss";
 
 
 
-function Login ({setLoggedIn}) {
+function Login ({setUser}) {
 
 
 
@@ -18,8 +18,8 @@ function Login ({setLoggedIn}) {
   
     
     if (loginToLogin) {
-     setLoggedIn(true);
-     localStorage.setItem("loggedIn", true);
+     setUser(true);
+     localStorage.setItem("user", true);
       
   } 
 }

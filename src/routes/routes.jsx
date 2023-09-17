@@ -15,8 +15,8 @@ import NotFound from "../pages/notFound";
 
 function  AppRoutes() {
     
-    const [isLoggedIn, setLoggedIn] = React.useState(
-        localStorage.getItem("isLoggedIn") || false,
+    const [user, setUser] = React.useState(
+        localStorage.getItem("user") || false,
       );
     
     return (
@@ -27,13 +27,13 @@ function  AppRoutes() {
         path="/login"
         element=
         
-          {isLoggedIn ? <Navigate to="/" /> : <Login setLoggedIn={setLoggedIn} />
+          {user ? <Navigate to="/" /> : <Login setUser={setUser} />
         }
       />
       <Route
         path="/"
         element={
-          isLoggedIn ? <Home setLoggedIn={setLoggedIn}/> : <Navigate to="/login" replace />
+          user ? <Home setUser={setUser}/> : <Navigate to="/login" replace />
         }
       />
     
@@ -42,16 +42,16 @@ function  AppRoutes() {
             <Route path="/register" element={<Register />} />
             
             <Route path="/favorites" element={
-          isLoggedIn ? <Favorites /> : <Navigate to="/login" replace />
+          user ? <Favorites /> : <Navigate to="/login" replace />
         } />
             <Route path="/category1" element={
-          isLoggedIn ? <Category /> : <Navigate to="/login" replace />
+          user ? <Category /> : <Navigate to="/login" replace />
         }/>
             <Route path="/category2" element={
-          isLoggedIn ? <Category /> : <Navigate to="/login" replace />
+          user ? <Category /> : <Navigate to="/login" replace />
         } />
             <Route path="/category3" element={
-          isLoggedIn ? <Category /> : <Navigate to="/login" replace />
+          user ? <Category /> : <Navigate to="/login" replace />
         } />
             <Route path="*" element={<NotFound />} />
         </Routes>
