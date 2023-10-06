@@ -1,266 +1,253 @@
 .btn {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .btn_icon:hover svg {
-    fill: transparent;
-    stroke: #ACACAC;
-    cursor: pointer;
+  fill: transparent;
+  stroke: #acacac;
+  cursor: pointer;
 }
 
 .btn_icon:active svg {
-    fill: transparent;
-    stroke: #FFFFFF;
-    cursor: pointer;
-
+  fill: transparent;
+  stroke: #ffffff;
+  cursor: pointer;
 }
 
 .btn_icon:active .track-play__like-svg,
 .btn_icon:active .track-play__dislike-svg {
-    fill: #696969;
-    stroke: #FFFFFF;
-    cursor: pointer;
+  fill: #696969;
+  stroke: #ffffff;
+  cursor: pointer;
 }
 
-
-
 .bar {
+  width: 100%;
+  background: rgba(28, 28, 28, 0.5);
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    background-color: black;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    background: rgba(28, 28, 28, 0.5);
+  }
 
-    &__content {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
+  &__player_progress {
+    width: 100%;
+    height: 5px;
+    background: #2e2e2e;
+  }
 
-    }
-
-    &__player_progress {
-        width: 100%;
-        height: 5px;
-        background: #2E2E2E;
-    }
-
-    &__player_block {
-        height: 73px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
+  &__player_block {
+    height: 73px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 
 .player {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  &__controls {
     display: flex;
     flex-direction: row;
+    padding: 0 27px 0 31px;
+  }
+
+  &__btn_prev {
+    margin-right: 23px;
+    padding: 5px;
+    display: flex;
     align-items: center;
-    justify-content: flex-start;
+  }
 
+  &__btn_prev_svg {
+    width: 15px;
+    height: 14px;
+  }
 
-    &__controls {
-        display: flex;
-        flex-direction: row;
-        padding: 0 27px 0 31px;
-    }
+  &__btn_play {
+    margin-right: 23px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+  }
 
-    &__btn_prev {
-        margin-right: 23px;
-        padding: 5px;
-        display: flex;
-        align-items: center;
-    }
+  &__btn_play_svg {
+    width: 22px;
+    height: 20px;
+    fill: #d9d9d9;
+  }
 
-    &__btn_prev_svg {
-        width: 15px;
-        height: 14px;
-    }
+  &__btn_next {
+    margin-right: 28px;
+    fill: #a53939;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+  }
 
-    &__btn_play {
-        margin-right: 23px;
-        padding: 5px;
-        display: flex;
-        align-items: center;
-    }
+  &__btn_next_svg {
+    width: 15px;
+    height: 14px;
+    fill: inherit;
+    stroke: #d9d9d9;
+  }
 
-    &__btn_play_svg {
-        width: 22px;
-        height: 20px;
-        fill: #D9D9D9;
+  &__btn_repeat {
+    margin-right: 24px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+  }
 
-    }
+  &__btn_repeat_svg {
+    width: 18px;
+    height: 12px;
+    fill: transparent;
+    stroke: #696969;
+  }
 
-    &__btn_next {
-        margin-right: 28px;
-        fill: #a53939;
-        padding: 5px;
-        display: flex;
-        align-items: center;
-    }
+  &__btn_shuffle {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+  }
 
-    &__btn_next_svg {
-        width: 15px;
-        height: 14px;
-        fill: inherit;
-        stroke: #D9D9D9;
-    }
-
-    &__btn_repeat {
-        margin-right: 24px;
-        padding: 5px;
-        display: flex;
-        align-items: center;
-    }
-
-    &__btn_repeat_svg {
-        width: 18px;
-        height: 12px;
-        fill: transparent;
-        stroke: #696969;
-    }
-
-    &__btn_shuffle {
-        display: flex;
-        align-items: center;
-        padding: 5px;
-       
-    }
-
-    &__btn_shuffle_svg {
-        width: 19px;
-        height: 12px;
-        fill: transparent;
-        stroke: #696969;
-    }
-
+  &__btn_shuffle_svg {
+    width: 19px;
+    height: 12px;
+    fill: transparent;
+    stroke: #696969;
+  }
 }
-
-
 
 .track_play {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 
-    &__contain {
-        width: auto;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        grid-template-areas: 'image author''image album';
-        align-items: center;
-    }
-
-    &__image {
-        width: 51px;
-        height: 51px;
-        background-color: #313131;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 12px;
-        grid-area: image;
-    }
-
-    &__svg {
-        width: 18px;
-        height: 17px;
-        fill: transparent;
-        stroke: #4E4E4E;
-    }
-
-
-    &__author {
-        grid-area: author;
-        min-width: 49px;
-    }
-
-    &__author_link {
-        font-style: normal;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-        color: #FFFFFF;
-        white-space: nowrap;
-    }
-
-    &__album {
-        grid-area: album;
-        min-width: 49px;
-    }
-
-    &__album_link {
-        font-style: normal;
-        font-weight: 400;
-        font-size: 13px;
-        line-height: 24px;
-        color: #FFFFFF;
-    }
-
-    &__like_dis {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin-left: 26%;
-    }
-
-    &__like,
-    &__dislike {
-        padding: 5px;
-    }
-
-    &__like_svg {
-        width: 14px;
-        height: 12px;
-        fill: transparent;
-        stroke: #696969;
-    }
-
-    &__dislike {
-        margin-left: 28.5px;
-    }
-
-    &__dislike_svg {
-        width: 14.34px;
-        height: 13px;
-        fill: transparent;
-        stroke: #696969;
-    }
-}
-
-
-
-.volume {
+  &__contain {
     width: auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 'image author' 'image album';
+    align-items: center;
+  }
+
+  &__image {
+    width: 51px;
+    height: 51px;
+    background-color: #313131;
     display: flex;
     align-items: center;
-    padding: 0 92px 0 0;
+    justify-content: center;
+    margin-right: 12px;
+    grid-area: image;
+  }
 
-    &__content {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: end;
-    }
+  &__svg {
+    width: 18px;
+    height: 17px;
+    fill: transparent;
+    stroke: #4e4e4e;
+  }
 
-    &__image {
-        width: 13px;
-        height: 18px;
-        margin-right: 17px;
-    }
+  &__author {
+    grid-area: author;
+    min-width: 49px;
+  }
 
-    &__svg {
-        width: 13px;
-        height: 18px;
-        fill: transparent;
+  &__author_link {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+    white-space: nowrap;
+  }
 
-    }
+  &__album {
+    grid-area: album;
+    min-width: 49px;
+  }
 
-    &__progress {
-        width: 109px;
-    }
+  &__album_link {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 24px;
+    color: #ffffff;
+    white-space: nowrap;
+  }
 
-    &__progress_line {
-        width: 109px;
-    }
+  &__like_dis {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 26%;
+  }
+
+  &__like,
+  &__dislike {
+    padding: 5px;
+  }
+
+  &__like_svg {
+    width: 14px;
+    height: 12px;
+    fill: transparent;
+    stroke: #696969;
+  }
+
+  &__dislike {
+    margin-left: 28.5px;
+  }
+
+  &__dislike_svg {
+    width: 14.34px;
+    height: 13px;
+    fill: transparent;
+    stroke: #696969;
+  }
+}
+
+.volume {
+  width: auto;
+  display: flex;
+  align-items: center;
+  padding: 0 92px 0 0;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+  }
+
+  &__image {
+    width: 13px;
+    height: 18px;
+    margin-right: 17px;
+  }
+
+  &__svg {
+    width: 13px;
+    height: 18px;
+    fill: transparent;
+  }
+
+  &__progress {
+    width: 109px;
+  }
+
+  &__progress_line {
+    width: 109px;
+  }
 }
