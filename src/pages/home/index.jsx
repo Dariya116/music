@@ -20,7 +20,7 @@ function Home({ setUser, user }) {
   const [addError, setAddError] = React.useState(null);
 
   const tracks = items.map((obj) => <Track open={open} setOpen={setOpen} key={obj.id} {...obj} />);
-
+console.log(items)
   const skeletons = [...new Array(4)].map((_, index) => <MyLoader key={Math.random(index)} />);
 
   React.useEffect(() => {
@@ -47,7 +47,9 @@ function Home({ setUser, user }) {
       setLoader(!true);
     }, 2000);
   };
-
+  const ref = React.useRef();
+  const ref1 = React.useRef();
+  const ref2 = React.useRef();
   const [musicFilter, setMusicFilter] = React.useState(false);
   const [musicYear, setMusicYear] = React.useState(false);
   const [musicStyle, setMusicStyle] = React.useState(false);
@@ -70,6 +72,26 @@ function Home({ setUser, user }) {
     setMusicFilter(false);
   };
 
+  React.useEffect(() => {
+    const clickOutside = (event) => {
+      if (!event.composedPath().includes(ref.current)) {
+        setMusicFilter(false);
+      }
+      if (!event.composedPath().includes(ref1.current)) {
+        setMusicYear(false);
+      }
+      if (!event.composedPath().includes(ref2.current)) {
+        setMusicStyle(false);
+      }
+    };
+
+    document.addEventListener('click', clickOutside);
+
+    return () => {
+      document.removeEventListener('click', clickOutside);
+    };
+  }, []);
+
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -87,6 +109,7 @@ function Home({ setUser, user }) {
 
                 <div className={styles.filter__choice}>
                   <div
+                    ref={ref}
                     role="button"
                     tabIndex="0"
                     className={`${styles.filter__button} ${styles.btn_text}`}
@@ -126,6 +149,7 @@ function Home({ setUser, user }) {
                 </div>
                 <div className={styles.filter__choice}>
                   <div
+                    ref={ref1}
                     role="button"
                     tabIndex="0"
                     className={`${styles.filter__button} ${styles.btn_text}`}
@@ -166,6 +190,7 @@ function Home({ setUser, user }) {
 
                 <div className={styles.filter__choice}>
                   <div
+                    ref={ref2}
                     role="button"
                     tabIndex="0"
                     className={`${styles.filter__button} ${styles.btn_text}`}

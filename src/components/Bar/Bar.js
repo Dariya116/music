@@ -2,8 +2,8 @@ import { useSelector } from 'react-redux';
 import styles from './Bar.module.scss';
 
 export default function Bar({ open }) {
-  const song = useSelector((state) => state.song.nameTrack);
-  const authorSong = useSelector((state) => state.song.authorTrack);
+  const song = useSelector((state) => state.song.nameTrack.name);
+  const authorSong = useSelector((state) => state.song.nameTrack.author);
 
   return (
     <div className={styles.bar__content}>

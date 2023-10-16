@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import styles from './Nav.module.scss';
 
 export default function Nav({ setUser, user }) {
+  const ref = React.useRef();
   const [burger, setBurger] = React.useState(false);
 
   const navBurger = () => {
@@ -12,10 +13,22 @@ export default function Nav({ setUser, user }) {
   };
 
   const exitButton = () => {
-    console.log('clickccc');
     setUser(!user);
     localStorage.setItem('user', false);
   };
+  React.useEffect(() => {
+    const clickOutside = (event) => {
+      if (!event.composedPath().includes(ref.current)) {
+        setBurger(false);
+      }
+    };
+
+    document.addEventListener('click', clickOutside);
+
+    return () => {
+      document.removeEventListener('click', clickOutside);
+    };
+  }, []);
 
   return (
     <nav className={styles.nav}>
@@ -26,6 +39,7 @@ export default function Nav({ setUser, user }) {
       </div>
       <div>
         <div
+        ref={ref}
           role="button"
           tabIndex="0"
           onClick={() => navBurger()}
