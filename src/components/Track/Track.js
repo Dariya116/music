@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './Track.module.scss';
 
-import { setNameTrack } from '../../redux/slices/song';
+import { setNameTrack, setUrlTrack } from '../../redux/slices/song';
 
 // eslint-disable-next-line camelcase
-function Track({ author, name, album, duration_in_seconds, setOpen }) {
+function Track({ author, name, album, duration_in_seconds, track_file, setOpen }) {
   const dispatch = useDispatch();
   const selectedTrack = useSelector((state) => state.song.nameTrack);
 
@@ -17,7 +17,8 @@ function Track({ author, name, album, duration_in_seconds, setOpen }) {
     e.preventDefault();
     dispatch(setNameTrack({ name, author }));
     setOpen(true);
-   
+    setIcon(true);
+    dispatch(setUrlTrack(track_file));
   };
 
   const onKeyPressTrack = (e) => {
@@ -34,32 +35,13 @@ function Track({ author, name, album, duration_in_seconds, setOpen }) {
     }
   };
 
-  const handleClickOutside = (event) => {
-    if (!event.composedPath().includes(ref.current)) {
-      setIcon(false);
-     
-    } else {
-      setIcon(true);
-    
-    }
-  };
-
-  React.useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
 
   function secondsToTime() {
-    
     // eslint-disable-next-line camelcase
     const minutes = duration_in_seconds % (60 * 60);
-   
+
     const m = Math.floor(minutes / 60);
 
-    
     const seconds = minutes % 60;
     const s = Math.ceil(seconds);
 
@@ -80,7 +62,7 @@ function Track({ author, name, album, duration_in_seconds, setOpen }) {
         <div className={styles.track__title}>
           <div className={styles.track__title_image}>
             <svg className={styles.track__title_svg} alt="music">
-              {icon ? (
+              {icon && selectedTrack.name === name ? (
                 <use href="img/icon/sprite.svg#icon-dot" />
               ) : (
                 <use href="img/icon/sprite.svg#icon-note" />

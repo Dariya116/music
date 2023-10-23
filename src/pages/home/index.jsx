@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 import styles from './home.module.scss';
 
@@ -13,14 +14,18 @@ import Search from '../../components/Search/Search';
 import Bar from '../../components/Bar/Bar';
 import MyLoaderRight from '../../components/MyLoaderRight';
 
+import { setRequestResponse } from '../../redux/slices/song';
+
+
 function Home({ setUser, user }) {
+  const dispatch = useDispatch();
   const [loader, setLoader] = React.useState(true);
   const [items, setItems] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [addError, setAddError] = React.useState(null);
 
   const tracks = items.map((obj) => <Track open={open} setOpen={setOpen} key={obj.id} {...obj} />);
-console.log(items)
+
   const skeletons = [...new Array(4)].map((_, index) => <MyLoader key={Math.random(index)} />);
 
   React.useEffect(() => {
@@ -32,6 +37,8 @@ console.log(items)
         setItems(res.data);
         setLoader(false);
         console.log(res.data);
+         dispatch(setRequestResponse(res.data));
+      
       })
       .catch((error) => {
         console.log(error);
@@ -296,7 +303,7 @@ console.log(items)
         </div>
       </main>
       <div className={styles.bar}>
-        <Bar open={open} />
+        <Bar open={open}/>
       </div>
       <footer className={styles.footer} />
     </div>
