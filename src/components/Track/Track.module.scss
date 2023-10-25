@@ -35,6 +35,13 @@
         height: 17px;
         fill: transparent;
         stroke: #4E4E4E;
+
+        &_active {
+        width: 16px;
+        height: 16px;
+        color: #B672FF;
+        border-radius: 100%;
+        }
     }
 
     //&__title-text {}
@@ -101,4 +108,7 @@
         color: #696969;
 
     }
+}
+.active {
+    scale: 2;
 }
