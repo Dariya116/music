@@ -16,7 +16,6 @@ import MyLoaderRight from '../../components/MyLoaderRight';
 
 import { setRequestResponse } from '../../redux/slices/song';
 
-
 function Home({ setUser, user }) {
   const dispatch = useDispatch();
   const [loader, setLoader] = React.useState(true);
@@ -26,7 +25,7 @@ function Home({ setUser, user }) {
 
   const tracks = items.map((obj) => <Track open={open} setOpen={setOpen} key={obj.id} {...obj} />);
 
-  const skeletons = [...new Array(4)].map((_, index) => <MyLoader key={Math.random(index)} />);
+  const skeletons = [...new Array(2)].map((_, index) => <MyLoader key={Math.random(index)} />);
 
   React.useEffect(() => {
     setLoader(true);
@@ -37,8 +36,7 @@ function Home({ setUser, user }) {
         setItems(res.data);
         setLoader(false);
         console.log(res.data);
-         dispatch(setRequestResponse(res.data));
-      
+        dispatch(setRequestResponse(res.data));
       })
       .catch((error) => {
         console.log(error);
@@ -303,7 +301,7 @@ function Home({ setUser, user }) {
         </div>
       </main>
       <div className={styles.bar}>
-        <Bar open={open}/>
+        <Bar open={open} />
       </div>
       <footer className={styles.footer} />
     </div>

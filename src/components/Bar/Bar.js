@@ -10,6 +10,10 @@ export default function Bar({ open }) {
   const selectedUrlTrack = useSelector((state) => state.song.urlTrack);
 
   const [isPlaying, setIsPlaying] = React.useState(false);
+  const [repeat, setRepeat] = React.useState(false);
+  const [volume, setVolume] = React.useState(60);
+  const [duration, setDuration] = React.useState(0);
+  const [currentTime, setCurrentTime] = React.useState(0);
 
   const handleStart = () => {
     audioRef.current.play();
@@ -27,23 +31,81 @@ export default function Bar({ open }) {
       audioRef.current.play();
       setIsPlaying(true);
     }
-  }, [song]);
+  }, [song, selectedUrlTrack]);
+
+  const handleRepeat = () => {
+    setRepeat(!repeat);
+    if (!repeat) {
+      audioRef.current.loop = true;
+    } else {
+      audioRef.current.loop = false;
+    }
+  };
+
+  React.useEffect(() => {
+    if (audioRef) {
+      audioRef.current.volume = volume / 100;
+    }
+  }, [volume, audioRef]);
+
+  const handleTimeUpdate = () => {
+    setCurrentTime(audioRef.current.currentTime);
+    setDuration(audioRef.current.duration);
+  };
+    React.useEffect(() => {
+      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
+      return () => {
+        audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+      };
+    }, []);
+  const handleSeek = (e) => {
+    audioRef.current.currentTime = e.target.value;
+    setCurrentTime(e.target.value);
+  };
+  function formatDuration(durationSeconds) {
+    const minutes = Math.floor(durationSeconds / 60);
+    const seconds = Math.floor(durationSeconds % 60);
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+    return `${minutes}:${formattedSeconds}`;
+  }
+
+
+  const inProgress = () => {
+    alert('Еще не реализовано!');
+  };
 
   return (
     <div>
-      <audio controls ref={audioRef} style={{ marginBottom: '100px' }}>
-        <source src={selectedUrlTrack} type="audio/mp3" />
-      </audio>
+      <audio src={selectedUrlTrack} ref={audioRef} style={{ marginBottom: '100px' }} />
 
       <div className={styles.bar__content}>
         {open && (
           <>
-            <div className={styles.bar__player_progress} />
+            <div>
+              <div className={styles.bar__player_progress}>
+                <span>{formatDuration(currentTime)}</span>
+                <span> / </span>
+                <span>{formatDuration(duration)}</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max={duration}
+                value={currentTime}
+                onChange={handleSeek}
+                className={styles.input_progress}
+              />
+            </div>
+
             <div className={styles.bar__player_block}>
               <div className={styles.player}>
                 <div className={styles.player__controls}>
                   <div className={styles.player__btn_prev}>
-                    <svg className={styles.player__btn_prev_svg} alt="prev">
+                    <svg
+                      className={styles.player__btn_prev_svg}
+                      alt="prev"
+                      onClick={inProgress}
+                      onKeyDown={inProgress}>
                       <use href="img/icon/sprite.svg#icon-prev" />
                     </svg>
                   </div>
@@ -61,17 +123,32 @@ export default function Bar({ open }) {
                       />
                     </svg>
                   </div>
-                  <div className={styles.player__btn_next}>
+                  <div
+                    className={styles.player__btn_next}
+                    onClick={inProgress}
+                    onKeyDown={inProgress}>
                     <svg className={styles.player__btn_next_svg} alt="next">
                       <use href="img/icon/sprite.svg#icon-next" />
                     </svg>
                   </div>
-                  <div className={`${styles.player__btn_repeat} ${styles.btn_icon}`}>
-                    <svg className={styles.player__btn_repeat_svg} alt="repeat">
+                  <div
+                    className={`${styles.player__btn_repeat} ${styles.btn_icon}`}
+                    onClick={() => handleRepeat()}
+                    onKeyDown={() => handleRepeat()}>
+                    <svg
+                      className={
+                        !repeat
+                          ? styles.player__btn_repeat_svg
+                          : styles.player__btn_repeat_svg_active
+                      }
+                      alt="repeat">
                       <use href="img/icon/sprite.svg#icon-repeat" />
                     </svg>
                   </div>
-                  <div className={`${styles.player__btn_shuffle} ${styles.btn_icon}`}>
+                  <div
+                    className={`${styles.player__btn_shuffle} ${styles.btn_icon}`}
+                    onClick={inProgress}
+                    onKeyDown={inProgress}>
                     <svg className={styles.player__btn_shuffle_svg} alt="shuffle">
                       <use href="img/icon/sprite.svg#icon-shuffle" />
                     </svg>
@@ -117,7 +194,15 @@ export default function Bar({ open }) {
                     </svg>
                   </div>
                   <div className={`${styles.volume__progress} ${styles.btn}`}>
-                    <input className={styles.volume__progress_line} type="range" name="range" />
+                    <input
+                      className={styles.volume__progress_line}
+                      type="range"
+                      value={volume}
+                      onChange={(e) => setVolume(e.target.value)}
+                      min={0}
+                      max={100}
+                      name="range"
+                    />
                   </div>
                 </div>
               </div>

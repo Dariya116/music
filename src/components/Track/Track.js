@@ -19,6 +19,7 @@ function Track({ author, name, album, duration_in_seconds, track_file, setOpen }
     setOpen(true);
     setIcon(true);
     dispatch(setUrlTrack(track_file));
+    sessionStorage.setItem('url', track_file);
   };
 
   const onKeyPressTrack = (e) => {
@@ -34,7 +35,6 @@ function Track({ author, name, album, duration_in_seconds, track_file, setOpen }
       clickTrack(e);
     }
   };
-
 
   function secondsToTime() {
     // eslint-disable-next-line camelcase
