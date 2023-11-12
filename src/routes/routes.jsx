@@ -9,8 +9,25 @@ import Category from '../pages/category';
 import NotFound from '../pages/notFound';
 
 function AppRoutes() {
-  const [user, setUser] = React.useState(localStorage.getItem('user') || false);
+  const [user, setUser] = React.useState(false);
+React.useEffect(() => {
+  if(localStorage.getItem('user')) {
+  setUser(true);
+}
 
+},[]);
+console.log('user:',user);
+
+
+ 
+
+  // if (localStorage.getItem('user') === true) {
+  //   setUser(true);
+  // } else {
+  //   setUser(false);
+  // }
+
+  // localStorage.getItem('user') ||
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" /> : <Login setUser={setUser} />} />
@@ -20,6 +37,7 @@ function AppRoutes() {
       />
 
       <Route path="/register" element={<Register />} />
+     
 
       <Route path="/favorites" element={user ? <Favorites /> : <Navigate to="/login" replace />} />
       <Route path="/category1" element={user ? <Category /> : <Navigate to="/login" replace />} />

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -13,11 +12,14 @@ import Nav from '../../components/Nav/Nav';
 import Search from '../../components/Search/Search';
 import Bar from '../../components/Bar/Bar';
 import MyLoaderRight from '../../components/MyLoaderRight';
+import SideBar from '../../components/Sidebar/Sidebar';
 
 import { setRequestResponse } from '../../redux/slices/song';
+import { Filter } from '../../components/Filter/Filter';
 
-function Home({ setUser, user }) {
+function Home({ setUser }) {
   const dispatch = useDispatch();
+
   const [loader, setLoader] = React.useState(true);
   const [items, setItems] = React.useState([]);
   const [open, setOpen] = React.useState(false);
@@ -52,55 +54,11 @@ function Home({ setUser, user }) {
       setLoader(!true);
     }, 2000);
   };
-  const ref = React.useRef();
-  const ref1 = React.useRef();
-  const ref2 = React.useRef();
-  const [musicFilter, setMusicFilter] = React.useState(false);
-  const [musicYear, setMusicYear] = React.useState(false);
-  const [musicStyle, setMusicStyle] = React.useState(false);
-
-  const musicFilterClick = () => {
-    setMusicFilter(!musicFilter);
-    setMusicStyle(false);
-    setMusicYear(false);
-  };
-
-  const musicYearClick = () => {
-    setMusicYear(!musicYear);
-    setMusicStyle(false);
-    setMusicFilter(false);
-  };
-
-  const musicStyleClick = () => {
-    setMusicStyle(!musicStyle);
-    setMusicYear(false);
-    setMusicFilter(false);
-  };
-
-  React.useEffect(() => {
-    const clickOutside = (event) => {
-      if (!event.composedPath().includes(ref.current)) {
-        setMusicFilter(false);
-      }
-      if (!event.composedPath().includes(ref1.current)) {
-        setMusicYear(false);
-      }
-      if (!event.composedPath().includes(ref2.current)) {
-        setMusicStyle(false);
-      }
-    };
-
-    document.addEventListener('click', clickOutside);
-
-    return () => {
-      document.removeEventListener('click', clickOutside);
-    };
-  }, []);
 
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <Nav setUser={setUser} user={user} />
+        <Nav setUser={setUser} />
 
         <div className={styles.main}>
           <div className={styles.centerblock}>
@@ -108,133 +66,7 @@ function Home({ setUser, user }) {
 
             <div>
               <h2 className={styles.centerblock__h2}>Треки</h2>
-
-              <div className={styles.filter}>
-                <div className={styles.filter__title}>Искать по:</div>
-
-                <div className={styles.filter__choice}>
-                  <div
-                    ref={ref}
-                    role="button"
-                    tabIndex="0"
-                    className={`${styles.filter__button} ${styles.btn_text}`}
-                    onClick={() => musicFilterClick()}
-                    onKeyDown={() => musicFilterClick()}>
-                    исполнителю
-                  </div>
-                  {musicFilter && (
-                    <ul className={styles.filter__menu}>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          исполнитель 1
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          исполнитель 1
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          исполнитель 1
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          исполнитель 1
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          исполнитель 1
-                        </a>
-                      </li>
-                    </ul>
-                  )}
-                </div>
-                <div className={styles.filter__choice}>
-                  <div
-                    ref={ref1}
-                    role="button"
-                    tabIndex="0"
-                    className={`${styles.filter__button} ${styles.btn_text}`}
-                    onClick={() => musicYearClick()}
-                    onKeyDown={() => musicYearClick()}>
-                    год выпуска
-                  </div>
-                  {musicYear && (
-                    <ul className={styles.filter__menu}>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          2000
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          2000
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          2000
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          2000
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          2000
-                        </a>
-                      </li>
-                    </ul>
-                  )}
-                </div>
-
-                <div className={styles.filter__choice}>
-                  <div
-                    ref={ref2}
-                    role="button"
-                    tabIndex="0"
-                    className={`${styles.filter__button} ${styles.btn_text}`}
-                    onClick={() => musicStyleClick()}
-                    onKeyDown={() => musicStyleClick()}>
-                    жанру
-                  </div>
-                  {musicStyle && (
-                    <ul className={styles.filter__menu}>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          жанр
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          жанр
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          жанр
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          жанр
-                        </a>
-                      </li>
-                      <li className={styles.filter__item}>
-                        <a href="http://" className={styles.filter__link}>
-                          жанр
-                        </a>
-                      </li>
-                    </ul>
-                  )}
-                </div>
-              </div>
-
+              <Filter />
               <div className={styles.centerblock__content}>
                 <div className={styles.playlist_title}>
                   <div className={`${styles.playlist_title__col} ${styles.col01}`}>Трек</div>
@@ -255,12 +87,7 @@ function Home({ setUser, user }) {
             </div>
           </div>
           <div className={styles.sidebar}>
-            <div className={styles.main__sidebar}>
-              <div className={styles.sidebar__personal}>
-                <p className={styles.sidebar__personal_name}>Sergey.Ivanov</p>
-                <div className={styles.sidebar__avatar} />
-              </div>
-            </div>
+            <SideBar setUser={setUser} />
             {loaderTest()}
             {loader ? (
               <MyLoaderRight />

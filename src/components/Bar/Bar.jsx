@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/media-has-caption */
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './Bar.module.scss';
@@ -52,12 +51,14 @@ export default function Bar({ open }) {
     setCurrentTime(audioRef.current.currentTime);
     setDuration(audioRef.current.duration);
   };
-    React.useEffect(() => {
-      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-      return () => {
+  React.useEffect(() => {
+    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
+    return () => {
+      if (audioRef.current !== null) {
         audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-      };
-    }, []);
+      }
+    };
+  }, []);
   const handleSeek = (e) => {
     audioRef.current.currentTime = e.target.value;
     setCurrentTime(e.target.value);
@@ -68,7 +69,6 @@ export default function Bar({ open }) {
     const formattedSeconds = seconds.toString().padStart(2, '0');
     return `${minutes}:${formattedSeconds}`;
   }
-
 
   const inProgress = () => {
     alert('Еще не реализовано!');

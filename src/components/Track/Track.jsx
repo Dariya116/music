@@ -5,7 +5,6 @@ import styles from './Track.module.scss';
 
 import { setNameTrack, setUrlTrack } from '../../redux/slices/song';
 
-// eslint-disable-next-line camelcase
 function Track({ author, name, album, duration_in_seconds, track_file, setOpen }) {
   const dispatch = useDispatch();
   const selectedTrack = useSelector((state) => state.song.nameTrack);
@@ -37,7 +36,6 @@ function Track({ author, name, album, duration_in_seconds, track_file, setOpen }
   };
 
   function secondsToTime() {
-    // eslint-disable-next-line camelcase
     const minutes = duration_in_seconds % (60 * 60);
 
     const m = Math.floor(minutes / 60);

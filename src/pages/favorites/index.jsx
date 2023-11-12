@@ -4,6 +4,8 @@ import Bar from '../../components/Bar/Bar';
 
 import styles from '../home/home.module.scss';
 
+import Sidebar from '../../components/Sidebar/Sidebar';
+
 function Favorites() {
   return (
     <div className={styles.container}>
@@ -30,12 +32,7 @@ function Favorites() {
             </div>
           </div>
           <div className={styles.sidebar}>
-            <div className={styles.main__sidebar}>
-              <div className={styles.sidebar__personal}>
-                <p className={styles.sidebar__personal_name}>Sergey.Ivanov</p>
-                <div className={styles.sidebar__avatar} />
-              </div>
-            </div>
+            <Sidebar />
           </div>
         </div>
       </main>
