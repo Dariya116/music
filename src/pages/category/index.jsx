@@ -4,7 +4,7 @@ import Bar from '../../components/Bar/Bar';
 import styles from '../home/home.module.scss';
 import Sidebar from '../../components/Sidebar/Sidebar';
 
-function Category() {
+function Category({setUser}) {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -14,7 +14,7 @@ function Category() {
             <Search />
           </div>
         </div>
-        <Sidebar/>
+        <Sidebar setUser={setUser}/>
       </main>
 
       <div className={styles.bar}>

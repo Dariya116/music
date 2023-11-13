@@ -37,10 +37,15 @@ console.log('user:',user);
       />
 
       <Route path="/register" element={<Register />} />
-     
 
-      <Route path="/favorites" element={user ? <Favorites /> : <Navigate to="/login" replace />} />
-      <Route path="/category1" element={user ? <Category /> : <Navigate to="/login" replace />} />
+      <Route
+        path="/favorites"
+        element={user ? <Favorites setUser={setUser} /> : <Navigate to="/login" replace />}
+      />
+      <Route
+        path="/category1"
+        element={user ? <Category setUser={setUser} /> : <Navigate to="/login" replace />}
+      />
       <Route path="/category2" element={user ? <Category /> : <Navigate to="/login" replace />} />
       <Route path="/category3" element={user ? <Category /> : <Navigate to="/login" replace />} />
       <Route path="*" element={<NotFound />} />

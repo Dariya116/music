@@ -6,7 +6,7 @@ import styles from '../home/home.module.scss';
 
 import Sidebar from '../../components/Sidebar/Sidebar';
 
-function Favorites() {
+function Favorites({setUser}) {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -32,7 +32,7 @@ function Favorites() {
             </div>
           </div>
           <div className={styles.sidebar}>
-            <Sidebar />
+            <Sidebar setUser={setUser} />
           </div>
         </div>
       </main>
