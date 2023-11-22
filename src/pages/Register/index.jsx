@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+
 import styles from './register.module.scss';
-import { setDataUser } from '../../redux/slices/dataUser';
+import { userNameContext } from '../../routes/routes';
 
 function Register() {
-  const dispatch = useDispatch();
+  
   const navigate = useNavigate();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -17,6 +17,7 @@ function Register() {
   const [responseError, setResponseError] = React.useState({});
   const [disabled, setDisabled] = React.useState(false);
   const [blockError, setBlockError] = React.useState(false);
+  const { setDataUser } = React.useContext(userNameContext);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -68,7 +69,7 @@ function Register() {
 
           if (data && data.email && data.email.includes('@')) {
             console.log(data.email);
-            dispatch(setDataUser(localStorage.getItem('data')));
+            setDataUser(localStorage.getItem('data'));
             navigate('/login');
           } else {
             setResponseError(data);

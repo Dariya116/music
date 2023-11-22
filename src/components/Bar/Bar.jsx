@@ -1,27 +1,46 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './Bar.module.scss';
+import {
+  setNameTrack,
+  setUrlTrack,
+  setIndexTrack,
+  setIcon,
+  setPulse,
+  setRequestResponse,
+} from '../../redux/slices/song';
 
-export default function Bar({ open }) {
+export default function Bar({ open, name, author, index, track_file }) {
+  const dispatch = useDispatch();
   const audioRef = React.useRef(null);
   const song = useSelector((state) => state.song.nameTrack.name);
   const authorSong = useSelector((state) => state.song.nameTrack.author);
-  const selectedUrlTrack = useSelector((state) => state.song.urlTrack);
+
+  let selectedUrlTrack = useSelector((state) => state.song.urlTrack);
+
+  let requestResponseBar = useSelector((state) => state.song.requestResponse); // все треки
+
+  let selectedIndex = useSelector((state) => state.song.indexTrack);
 
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [repeat, setRepeat] = React.useState(false);
   const [volume, setVolume] = React.useState(60);
   const [duration, setDuration] = React.useState(0);
   const [currentTime, setCurrentTime] = React.useState(0);
+  const [mix, setMix] = React.useState(false);
+  const [shuffleArr, setShuffleArr] = React.useState(requestResponseBar);
+ 
 
   const handleStart = () => {
     audioRef.current.play();
     setIsPlaying(true);
+    dispatch(setPulse(true));
   };
 
   const handleStop = () => {
     audioRef.current.pause();
     setIsPlaying(false);
+    dispatch(setPulse(false));
   };
 
   const togglePlay = isPlaying ? handleStop : handleStart;
@@ -29,6 +48,7 @@ export default function Bar({ open }) {
     if (song) {
       audioRef.current.play();
       setIsPlaying(true);
+      dispatch(setPulse(true));
     }
   }, [song, selectedUrlTrack]);
 
@@ -48,8 +68,10 @@ export default function Bar({ open }) {
   }, [volume, audioRef]);
 
   const handleTimeUpdate = () => {
-    setCurrentTime(audioRef.current.currentTime);
-    setDuration(audioRef.current.duration);
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+      setDuration(audioRef.current.duration);
+    }
   };
   React.useEffect(() => {
     audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
@@ -59,6 +81,7 @@ export default function Bar({ open }) {
       }
     };
   }, []);
+
   const handleSeek = (e) => {
     audioRef.current.currentTime = e.target.value;
     setCurrentTime(e.target.value);
@@ -70,13 +93,68 @@ export default function Bar({ open }) {
     return `${minutes}:${formattedSeconds}`;
   }
 
-  const inProgress = () => {
-    alert('Еще не реализовано!');
+  const handleNext = () => {
+    if (selectedIndex >= requestResponseBar.length - 1) {
+      return;
+    } else {
+      dispatch(setIndexTrack(selectedIndex + 1));
+      dispatch(setNameTrack(requestResponseBar[selectedIndex + 1]));
+      dispatch(setUrlTrack(requestResponseBar[selectedIndex + 1].track_file));
+      dispatch(setIcon(true));
+    }
+  };
+
+  const handlePrevious = () => {
+    if (selectedIndex === 0) {
+      return;
+    } else {
+      dispatch(setIndexTrack(selectedIndex - 1));
+      dispatch(setNameTrack(requestResponseBar[selectedIndex - 1]));
+      dispatch(setUrlTrack(requestResponseBar[selectedIndex - 1].track_file));
+      dispatch(setIcon(true));
+    }
+  };
+
+  function shuffle(array) {
+    var newArray = array.slice(); // создаем новый массив на основе исходного массива
+    var originalArray = array.slice();
+    let currentIndex = newArray.length,
+      temporaryValue,
+      randomIndex;
+
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      temporaryValue = newArray[currentIndex];
+      newArray[currentIndex] = newArray[randomIndex];
+      newArray[randomIndex] = temporaryValue;
+    }
+
+    return { shuffledArray: newArray, originalArray: originalArray };
+  }
+  // const originalRequestResponseBar = [...requestResponseBar];
+  // let newRequestResponseBar = shuffle(originalRequestResponseBar);
+
+  const handleShuffle = () => {
+    setMix(!mix);
+
+    if (!mix) {
+      setShuffleArr(shuffle(shuffleArr))
+      dispatch(setRequestResponse(shuffleArr));
+    } else {
+      dispatch(setRequestResponse());
+    }
   };
 
   return (
     <div>
-      <audio src={selectedUrlTrack} ref={audioRef} style={{ marginBottom: '100px' }} />
+      <audio
+        src={selectedUrlTrack}
+        onEnded={handleNext}
+        ref={audioRef}
+        style={{ marginBottom: '100px' }}
+      />
 
       <div className={styles.bar__content}>
         {open && (
@@ -104,8 +182,8 @@ export default function Bar({ open }) {
                     <svg
                       className={styles.player__btn_prev_svg}
                       alt="prev"
-                      onClick={inProgress}
-                      onKeyDown={inProgress}>
+                      onClick={() => handlePrevious()}
+                      onKeyDown={() => handlePrevious()}>
                       <use href="img/icon/sprite.svg#icon-prev" />
                     </svg>
                   </div>
@@ -125,8 +203,8 @@ export default function Bar({ open }) {
                   </div>
                   <div
                     className={styles.player__btn_next}
-                    onClick={inProgress}
-                    onKeyDown={inProgress}>
+                    onClick={() => handleNext()}
+                    onKeyDown={() => handleNext()}>
                     <svg className={styles.player__btn_next_svg} alt="next">
                       <use href="img/icon/sprite.svg#icon-next" />
                     </svg>
@@ -147,9 +225,15 @@ export default function Bar({ open }) {
                   </div>
                   <div
                     className={`${styles.player__btn_shuffle} ${styles.btn_icon}`}
-                    onClick={inProgress}
-                    onKeyDown={inProgress}>
-                    <svg className={styles.player__btn_shuffle_svg} alt="shuffle">
+                    onClick={() => handleShuffle()}
+                    onKeyDown={() => handleShuffle()}>
+                    <svg
+                      className={
+                        !mix
+                          ? styles.player__btn_shuffle_svg
+                          : styles.player__btn_shuffle_svg_active
+                      }
+                      alt="shuffle">
                       <use href="img/icon/sprite.svg#icon-shuffle" />
                     </svg>
                   </div>

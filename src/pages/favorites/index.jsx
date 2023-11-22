@@ -10,7 +10,7 @@ function Favorites({setUser}) {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <Nav />
+        <Nav setUser={setUser}/>
 
         <div className={styles.main}>
           <div className={styles.centerblock}>

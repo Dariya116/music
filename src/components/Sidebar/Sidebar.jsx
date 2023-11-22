@@ -1,25 +1,25 @@
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import styles from './Sidebar.module.scss';
-import { setDataUser } from '../../redux/slices/dataUser';
-
+import { userNameContext } from '../../routes/routes';
 
 function Sidebar({ setUser }) {
-  const dispatch = useDispatch();
+  const { dataUser, setDataUser } = React.useContext(userNameContext);
+
   const navigate = useNavigate();
-  dispatch(setDataUser(localStorage.getItem('data')));
-  const selectedName = useSelector((state) => state.dataUser);
+  setDataUser(localStorage.getItem('data'));
 
   const exitIcon = () => {
     setUser(false);
     localStorage.clear();
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
     <div className={styles.main__sidebar}>
       <div className={styles.sidebar__personal}>
-        <p className={styles.sidebar__personal_name}>{selectedName.dataUser}</p>
+        <p className={styles.sidebar__personal_name}>{dataUser}</p>
         <div className={styles.sidebar__avatar}>
           <svg alt="exit" onClick={() => exitIcon()}>
             <use href="img/icon/sprite.svg#icon-exit" />

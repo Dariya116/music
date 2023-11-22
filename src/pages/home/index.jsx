@@ -25,7 +25,7 @@ function Home({ setUser }) {
   const [open, setOpen] = React.useState(false);
   const [addError, setAddError] = React.useState(null);
 
-  const tracks = items.map((obj) => <Track open={open} setOpen={setOpen} key={obj.id} {...obj} />);
+  const tracks = items.map((obj, index) => <Track open={open} setOpen={setOpen} key={obj.id} {...obj} index={index} />);
 
   const skeletons = [...new Array(2)].map((_, index) => <MyLoader key={Math.random(index)} />);
 
