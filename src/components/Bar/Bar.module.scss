@@ -76,10 +76,6 @@
   &__btn_prev_svg {
     width: 15px;
     height: 14px;
-
-    &:hover {
-      cursor: pointer;
-    }
   }
 
   &__btn_play {
@@ -108,9 +104,6 @@
     height: 14px;
     fill: inherit;
     stroke: #d9d9d9;
-    &:hover {
-      cursor: pointer;
-    }
   }
 
   &__btn_repeat {
@@ -144,12 +137,6 @@
     height: 12px;
     fill: transparent;
     stroke: #696969;
-    &_active {
-      width: 19px;
-    height: 12px;
-    fill: transparent;
-    stroke: #ffffff;
-    }
   }
 }
 

@@ -1,9 +1,10 @@
 import React from 'react';
+
 import { Link } from 'react-router-dom';
 
 import styles from './Nav.module.scss';
 
-export default function Nav({setUser}) {
+export default function Nav({ setUser, user }) {
   const ref = React.useRef();
   const [burger, setBurger] = React.useState(false);
 
@@ -12,9 +13,8 @@ export default function Nav({setUser}) {
   };
 
   const exitButton = () => {
-   setUser(false);
-   localStorage.clear();
-  
+    setUser(!user);
+    localStorage.setItem('user', false);
   };
   React.useEffect(() => {
     const clickOutside = (event) => {
@@ -39,7 +39,7 @@ export default function Nav({setUser}) {
       </div>
       <div>
         <div
-          ref={ref}
+        ref={ref}
           role="button"
           tabIndex="0"
           onClick={() => navBurger()}

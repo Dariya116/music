@@ -1,22 +1,28 @@
 import Nav from '../../components/Nav/Nav';
 import Search from '../../components/Search/Search';
 import Bar from '../../components/Bar/Bar';
-import styles from '../home/home.module.scss';
-import Sidebar from '../../components/Sidebar/Sidebar';
 
-function Category({setUser}) {
+import styles from '../home/home.module.scss';
+
+function Category() {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <Nav setUser={setUser}/>
+        <Nav />
+
         <div className={styles.main}>
           <div className={styles.centerblock}>
             <Search />
           </div>
         </div>
-        <Sidebar setUser={setUser}/>
+        <div className={styles.main__sidebar}>
+          <div className={styles.sidebar__personal}>
+            <p className={styles.sidebar__personal_name}>Sergey.Ivanov</p>
+            <div className={styles.sidebar__avatar} />
+          </div>
+        </div>
       </main>
-
+      
       <div className={styles.bar}>
         <Bar />
       </div>
