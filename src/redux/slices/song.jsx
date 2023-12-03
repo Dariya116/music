@@ -2,12 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   nameTrack: {},
-  requestResponse: [],
+  requestResponse:[],
+  copyRequestResponse:[],
   urlTrack: '',
   indexTrack: 0,
   icon: false,
-  pulse:false,
+  pulse: false,
 };
+
 const songSlice = createSlice({
   name: 'song',
   initialState,
@@ -18,6 +20,9 @@ const songSlice = createSlice({
 
     setRequestResponse(state, action) {
       state.requestResponse = action.payload;
+    },
+    setCopyRequestResponse(state, action) {
+      state.copyRequestResponse = action.payload;
     },
     setUrlTrack(state, action) {
       state.urlTrack = '';
@@ -35,5 +40,5 @@ const songSlice = createSlice({
     },
   },
 });
-export const { setNameTrack, setRequestResponse, setUrlTrack, setIndexTrack, setIcon, setPulse } = songSlice.actions;
+export const { setNameTrack, setRequestResponse, setUrlTrack, setIndexTrack, setIcon, setPulse, setCopyRequestResponse } = songSlice.actions;
 export default songSlice.reducer;

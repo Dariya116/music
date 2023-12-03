@@ -15,12 +15,11 @@ export default function Bar({ open, name, author, index, track_file }) {
   const audioRef = React.useRef(null);
   const song = useSelector((state) => state.song.nameTrack.name);
   const authorSong = useSelector((state) => state.song.nameTrack.author);
-
   let selectedUrlTrack = useSelector((state) => state.song.urlTrack);
-
   let requestResponseBar = useSelector((state) => state.song.requestResponse); // все треки
-
+  let copyRequestResponseBar = useSelector((state) => state.song.copyRequestResponse);
   let selectedIndex = useSelector((state) => state.song.indexTrack);
+  const currentIndex = useSelector((state) => state.song.indexTrack);
 
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [repeat, setRepeat] = React.useState(false);
@@ -28,8 +27,7 @@ export default function Bar({ open, name, author, index, track_file }) {
   const [duration, setDuration] = React.useState(0);
   const [currentTime, setCurrentTime] = React.useState(0);
   const [mix, setMix] = React.useState(false);
-  const [shuffleArr, setShuffleArr] = React.useState(requestResponseBar);
- 
+  
 
   const handleStart = () => {
     audioRef.current.play();
@@ -50,7 +48,7 @@ export default function Bar({ open, name, author, index, track_file }) {
       setIsPlaying(true);
       dispatch(setPulse(true));
     }
-  }, [song, selectedUrlTrack]);
+  }, [song, selectedUrlTrack, selectedIndex]);
 
   const handleRepeat = () => {
     setRepeat(!repeat);
@@ -133,19 +131,28 @@ export default function Bar({ open, name, author, index, track_file }) {
 
     return { shuffledArray: newArray, originalArray: originalArray };
   }
-  // const originalRequestResponseBar = [...requestResponseBar];
-  // let newRequestResponseBar = shuffle(originalRequestResponseBar);
+  
+  let newRequestResponseBar = shuffle(requestResponseBar);
 
-  const handleShuffle = () => {
-    setMix(!mix);
+   const handleShuffle = () => {
+     setMix(!mix);
 
-    if (!mix) {
-      setShuffleArr(shuffle(shuffleArr))
-      dispatch(setRequestResponse(shuffleArr));
-    } else {
-      dispatch(setRequestResponse());
-    }
-  };
+   if (!mix) {
+     dispatch(setRequestResponse(newRequestResponseBar.shuffledArray));
+    
+     dispatch(
+       setIndexTrack(newRequestResponseBar.shuffledArray.indexOf(requestResponseBar[currentIndex])),
+     );
+   } else {
+     dispatch(setRequestResponse(copyRequestResponseBar));
+  
+     dispatch(
+       setIndexTrack(copyRequestResponseBar.indexOf(requestResponseBar[currentIndex])),
+     );
+    
+   }
+
+   };
 
   return (
     <div>

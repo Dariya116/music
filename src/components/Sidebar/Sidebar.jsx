@@ -8,7 +8,9 @@ function Sidebar({ setUser }) {
   const { dataUser, setDataUser } = React.useContext(userNameContext);
 
   const navigate = useNavigate();
-  setDataUser(localStorage.getItem('data'));
+  React.useEffect(() => {
+    setDataUser(localStorage.getItem('data'));
+  }, []);
 
   const exitIcon = () => {
     setUser(false);

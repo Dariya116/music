@@ -14,7 +14,7 @@ import Bar from '../../components/Bar/Bar';
 import MyLoaderRight from '../../components/MyLoaderRight';
 import SideBar from '../../components/Sidebar/Sidebar';
 
-import { setRequestResponse } from '../../redux/slices/song';
+import { setCopyRequestResponse, setRequestResponse } from '../../redux/slices/song';
 import { Filter } from '../../components/Filter/Filter';
 
 function Home({ setUser }) {
@@ -25,7 +25,9 @@ function Home({ setUser }) {
   const [open, setOpen] = React.useState(false);
   const [addError, setAddError] = React.useState(null);
 
-  const tracks = items.map((obj, index) => <Track open={open} setOpen={setOpen} key={obj.id} {...obj} index={index} />);
+  const tracks = items.map((obj, index) => (
+    <Track setOpen={setOpen} key={obj.id} {...obj} index={index} />
+  ));
 
   const skeletons = [...new Array(2)].map((_, index) => <MyLoader key={Math.random(index)} />);
 
@@ -39,6 +41,7 @@ function Home({ setUser }) {
         setLoader(false);
         console.log(res.data);
         dispatch(setRequestResponse(res.data));
+        dispatch(setCopyRequestResponse(res.data));
       })
       .catch((error) => {
         console.log(error);
@@ -128,7 +131,7 @@ function Home({ setUser }) {
         </div>
       </main>
       <div className={styles.bar}>
-        <Bar open={open} />
+        <Bar open={open} setOpen={setOpen} />
       </div>
       <footer className={styles.footer} />
     </div>
