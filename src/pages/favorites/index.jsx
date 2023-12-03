@@ -4,11 +4,13 @@ import Bar from '../../components/Bar/Bar';
 
 import styles from '../home/home.module.scss';
 
-function Favorites() {
+import Sidebar from '../../components/Sidebar/Sidebar';
+
+function Favorites({setUser}) {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <Nav />
+        <Nav setUser={setUser}/>
 
         <div className={styles.main}>
           <div className={styles.centerblock}>
@@ -30,12 +32,7 @@ function Favorites() {
             </div>
           </div>
           <div className={styles.sidebar}>
-            <div className={styles.main__sidebar}>
-              <div className={styles.sidebar__personal}>
-                <p className={styles.sidebar__personal_name}>Sergey.Ivanov</p>
-                <div className={styles.sidebar__avatar} />
-              </div>
-            </div>
+            <Sidebar setUser={setUser} />
           </div>
         </div>
       </main>
