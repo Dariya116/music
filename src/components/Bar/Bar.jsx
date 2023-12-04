@@ -10,7 +10,7 @@ import {
   setRequestResponse,
 } from '../../redux/slices/song';
 
-export default function Bar({ open, name, author, index, track_file }) {
+export default function Bar({ open}) {
   const dispatch = useDispatch();
   const audioRef = React.useRef(null);
   const song = useSelector((state) => state.song.nameTrack.name);
@@ -27,7 +27,6 @@ export default function Bar({ open, name, author, index, track_file }) {
   const [duration, setDuration] = React.useState(0);
   const [currentTime, setCurrentTime] = React.useState(0);
   const [mix, setMix] = React.useState(false);
-  
 
   const handleStart = () => {
     audioRef.current.play();
@@ -114,8 +113,8 @@ export default function Bar({ open, name, author, index, track_file }) {
   };
 
   function shuffle(array) {
-    var newArray = array.slice(); // создаем новый массив на основе исходного массива
-    var originalArray = array.slice();
+    let newArray = array.slice(); 
+    let originalArray = array.slice();
     let currentIndex = newArray.length,
       temporaryValue,
       randomIndex;
@@ -131,28 +130,26 @@ export default function Bar({ open, name, author, index, track_file }) {
 
     return { shuffledArray: newArray, originalArray: originalArray };
   }
-  
+
   let newRequestResponseBar = shuffle(requestResponseBar);
 
-   const handleShuffle = () => {
-     setMix(!mix);
+  const handleShuffle = () => {
+    setMix(!mix);
 
-   if (!mix) {
-     dispatch(setRequestResponse(newRequestResponseBar.shuffledArray));
-    
-     dispatch(
-       setIndexTrack(newRequestResponseBar.shuffledArray.indexOf(requestResponseBar[currentIndex])),
-     );
-   } else {
-     dispatch(setRequestResponse(copyRequestResponseBar));
-  
-     dispatch(
-       setIndexTrack(copyRequestResponseBar.indexOf(requestResponseBar[currentIndex])),
-     );
-    
-   }
+    if (!mix) {
+      dispatch(setRequestResponse(newRequestResponseBar.shuffledArray));
 
-   };
+      dispatch(
+        setIndexTrack(
+          newRequestResponseBar.shuffledArray.indexOf(requestResponseBar[currentIndex]),
+        ),
+      );
+    } else {
+      dispatch(setRequestResponse(copyRequestResponseBar));
+
+      dispatch(setIndexTrack(copyRequestResponseBar.indexOf(requestResponseBar[currentIndex])));
+    }
+  };
 
   return (
     <div>
