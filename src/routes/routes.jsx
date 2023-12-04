@@ -7,48 +7,26 @@ import Login from '../pages/login';
 import Favorites from '../pages/favorites';
 import Category from '../pages/category';
 import NotFound from '../pages/notFound';
-export const userNameContext = React.createContext();
-function AppRoutes() {
-  const [dataUser, setDataUser] = React.useState('');
-  const [user, setUser] = React.useState(false);
-React.useEffect(() => {
-  if(localStorage.getItem('user')) {
-  setUser(true);
-}
 
-},[]);
-console.log('user:',user);
+function AppRoutes() {
+  const [user, setUser] = React.useState(localStorage.getItem('user') || false);
 
   return (
-    <userNameContext.Provider value={{dataUser, setDataUser}}>
-      <Routes>
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login setUser={setUser} />} />
-        <Route
-          path="/"
-          element={user ? <Home user={user} setUser={setUser} /> : <Navigate to="/login" replace />}
-        />
+    <Routes>
+      <Route path="/login" element={user ? <Navigate to="/" /> : <Login setUser={setUser} />} />
+      <Route
+        path="/"
+        element={user ? <Home user={user} setUser={setUser} /> : <Navigate to="/login" replace />}
+      />
 
-        <Route path="/register" element={<Register />} />
+      <Route path="/register" element={<Register />} />
 
-        <Route
-          path="/favorites"
-          element={user ? <Favorites setUser={setUser} /> : <Navigate to="/login" replace />}
-        />
-        <Route
-          path="/category1"
-          element={user ? <Category setUser={setUser} /> : <Navigate to="/login" replace />}
-        />
-        <Route
-          path="/category2"
-          element={user ? <Category setUser={setUser} /> : <Navigate to="/login" replace />}
-        />
-        <Route
-          path="/category3"
-          element={user ? <Category setUser={setUser} /> : <Navigate to="/login" replace />}
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </userNameContext.Provider>
+      <Route path="/favorites" element={user ? <Favorites /> : <Navigate to="/login" replace />} />
+      <Route path="/category1" element={user ? <Category /> : <Navigate to="/login" replace />} />
+      <Route path="/category2" element={user ? <Category /> : <Navigate to="/login" replace />} />
+      <Route path="/category3" element={user ? <Category /> : <Navigate to="/login" replace />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 export default AppRoutes;

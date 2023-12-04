@@ -3,25 +3,22 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './Track.module.scss';
 
-import { setIndexTrack, setNameTrack, setUrlTrack, setIcon, setPulse } from '../../redux/slices/song';
+import { setNameTrack, setUrlTrack } from '../../redux/slices/song';
 
-function Track({ author, name, album, duration_in_seconds, track_file, setOpen, index }) {
+// eslint-disable-next-line camelcase
+function Track({ author, name, album, duration_in_seconds, track_file, setOpen }) {
   const dispatch = useDispatch();
   const selectedTrack = useSelector((state) => state.song.nameTrack);
-  const selectedIcon = useSelector((state) => state.song.icon);
-  const selectedPulse = useSelector((state) => state.song.pulse);
 
+  const [icon, setIcon] = React.useState(selectedTrack.name === name);
   const ref = React.useRef();
 
   const clickTrack = (e) => {
     e.preventDefault();
     dispatch(setNameTrack({ name, author }));
-    dispatch(setIndexTrack(index));
-    dispatch(setUrlTrack(track_file));
     setOpen(true);
-    dispatch(setIcon(true));
-    dispatch(setPulse(true));
-
+    setIcon(true);
+    dispatch(setUrlTrack(track_file));
     sessionStorage.setItem('url', track_file);
   };
 
@@ -40,6 +37,7 @@ function Track({ author, name, album, duration_in_seconds, track_file, setOpen, 
   };
 
   function secondsToTime() {
+    // eslint-disable-next-line camelcase
     const minutes = duration_in_seconds % (60 * 60);
 
     const m = Math.floor(minutes / 60);
@@ -50,7 +48,6 @@ function Track({ author, name, album, duration_in_seconds, track_file, setOpen, 
     return `${m}:${s < 10 ? `0${s}` : s}`;
   }
   const time = secondsToTime(duration_in_seconds);
-
 
   return (
     <div className={styles.playlist__item}>
@@ -64,9 +61,9 @@ function Track({ author, name, album, duration_in_seconds, track_file, setOpen, 
         onKeyDown={(e) => onKeyPressTrack(e)}>
         <div className={styles.track__title}>
           <div className={styles.track__title_image}>
-            <svg className={`${styles.track__title_svg} `} alt="music">
-              {selectedIcon && selectedTrack.name === name ? (
-                <use className={selectedPulse ? styles.active_icon : ""} href="img/icon/sprite.svg#icon-dot" />
+            <svg className={styles.track__title_svg} alt="music">
+              {icon && selectedTrack.name === name ? (
+                <use href="img/icon/sprite.svg#icon-dot" />
               ) : (
                 <use href="img/icon/sprite.svg#icon-note" />
               )}

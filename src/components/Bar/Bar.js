@@ -1,44 +1,28 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styles from './Bar.module.scss';
-import {
-  setNameTrack,
-  setUrlTrack,
-  setIndexTrack,
-  setIcon,
-  setPulse,
-  setRequestResponse,
-} from '../../redux/slices/song';
 
-export default function Bar({ open, name, author, index, track_file }) {
-  const dispatch = useDispatch();
+export default function Bar({ open }) {
   const audioRef = React.useRef(null);
   const song = useSelector((state) => state.song.nameTrack.name);
   const authorSong = useSelector((state) => state.song.nameTrack.author);
-  let selectedUrlTrack = useSelector((state) => state.song.urlTrack);
-  let requestResponseBar = useSelector((state) => state.song.requestResponse); // все треки
-  let copyRequestResponseBar = useSelector((state) => state.song.copyRequestResponse);
-  let selectedIndex = useSelector((state) => state.song.indexTrack);
-  const currentIndex = useSelector((state) => state.song.indexTrack);
+  const selectedUrlTrack = useSelector((state) => state.song.urlTrack);
 
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [repeat, setRepeat] = React.useState(false);
   const [volume, setVolume] = React.useState(60);
   const [duration, setDuration] = React.useState(0);
   const [currentTime, setCurrentTime] = React.useState(0);
-  const [mix, setMix] = React.useState(false);
-  
 
   const handleStart = () => {
     audioRef.current.play();
     setIsPlaying(true);
-    dispatch(setPulse(true));
   };
 
   const handleStop = () => {
     audioRef.current.pause();
     setIsPlaying(false);
-    dispatch(setPulse(false));
   };
 
   const togglePlay = isPlaying ? handleStop : handleStart;
@@ -46,9 +30,8 @@ export default function Bar({ open, name, author, index, track_file }) {
     if (song) {
       audioRef.current.play();
       setIsPlaying(true);
-      dispatch(setPulse(true));
     }
-  }, [song, selectedUrlTrack, selectedIndex]);
+  }, [song, selectedUrlTrack]);
 
   const handleRepeat = () => {
     setRepeat(!repeat);
@@ -66,20 +49,15 @@ export default function Bar({ open, name, author, index, track_file }) {
   }, [volume, audioRef]);
 
   const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime);
-      setDuration(audioRef.current.duration);
-    }
+    setCurrentTime(audioRef.current.currentTime);
+    setDuration(audioRef.current.duration);
   };
-  React.useEffect(() => {
-    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-    return () => {
-      if (audioRef.current !== null) {
+    React.useEffect(() => {
+      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
+      return () => {
         audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-      }
-    };
-  }, []);
-
+      };
+    }, []);
   const handleSeek = (e) => {
     audioRef.current.currentTime = e.target.value;
     setCurrentTime(e.target.value);
@@ -91,77 +69,14 @@ export default function Bar({ open, name, author, index, track_file }) {
     return `${minutes}:${formattedSeconds}`;
   }
 
-  const handleNext = () => {
-    if (selectedIndex >= requestResponseBar.length - 1) {
-      return;
-    } else {
-      dispatch(setIndexTrack(selectedIndex + 1));
-      dispatch(setNameTrack(requestResponseBar[selectedIndex + 1]));
-      dispatch(setUrlTrack(requestResponseBar[selectedIndex + 1].track_file));
-      dispatch(setIcon(true));
-    }
+
+  const inProgress = () => {
+    alert('Еще не реализовано!');
   };
-
-  const handlePrevious = () => {
-    if (selectedIndex === 0) {
-      return;
-    } else {
-      dispatch(setIndexTrack(selectedIndex - 1));
-      dispatch(setNameTrack(requestResponseBar[selectedIndex - 1]));
-      dispatch(setUrlTrack(requestResponseBar[selectedIndex - 1].track_file));
-      dispatch(setIcon(true));
-    }
-  };
-
-  function shuffle(array) {
-    var newArray = array.slice(); // создаем новый массив на основе исходного массива
-    var originalArray = array.slice();
-    let currentIndex = newArray.length,
-      temporaryValue,
-      randomIndex;
-
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-
-      temporaryValue = newArray[currentIndex];
-      newArray[currentIndex] = newArray[randomIndex];
-      newArray[randomIndex] = temporaryValue;
-    }
-
-    return { shuffledArray: newArray, originalArray: originalArray };
-  }
-  
-  let newRequestResponseBar = shuffle(requestResponseBar);
-
-   const handleShuffle = () => {
-     setMix(!mix);
-
-   if (!mix) {
-     dispatch(setRequestResponse(newRequestResponseBar.shuffledArray));
-    
-     dispatch(
-       setIndexTrack(newRequestResponseBar.shuffledArray.indexOf(requestResponseBar[currentIndex])),
-     );
-   } else {
-     dispatch(setRequestResponse(copyRequestResponseBar));
-  
-     dispatch(
-       setIndexTrack(copyRequestResponseBar.indexOf(requestResponseBar[currentIndex])),
-     );
-    
-   }
-
-   };
 
   return (
     <div>
-      <audio
-        src={selectedUrlTrack}
-        onEnded={handleNext}
-        ref={audioRef}
-        style={{ marginBottom: '100px' }}
-      />
+      <audio src={selectedUrlTrack} ref={audioRef} style={{ marginBottom: '100px' }} />
 
       <div className={styles.bar__content}>
         {open && (
@@ -189,8 +104,8 @@ export default function Bar({ open, name, author, index, track_file }) {
                     <svg
                       className={styles.player__btn_prev_svg}
                       alt="prev"
-                      onClick={() => handlePrevious()}
-                      onKeyDown={() => handlePrevious()}>
+                      onClick={inProgress}
+                      onKeyDown={inProgress}>
                       <use href="img/icon/sprite.svg#icon-prev" />
                     </svg>
                   </div>
@@ -210,8 +125,8 @@ export default function Bar({ open, name, author, index, track_file }) {
                   </div>
                   <div
                     className={styles.player__btn_next}
-                    onClick={() => handleNext()}
-                    onKeyDown={() => handleNext()}>
+                    onClick={inProgress}
+                    onKeyDown={inProgress}>
                     <svg className={styles.player__btn_next_svg} alt="next">
                       <use href="img/icon/sprite.svg#icon-next" />
                     </svg>
@@ -232,15 +147,9 @@ export default function Bar({ open, name, author, index, track_file }) {
                   </div>
                   <div
                     className={`${styles.player__btn_shuffle} ${styles.btn_icon}`}
-                    onClick={() => handleShuffle()}
-                    onKeyDown={() => handleShuffle()}>
-                    <svg
-                      className={
-                        !mix
-                          ? styles.player__btn_shuffle_svg
-                          : styles.player__btn_shuffle_svg_active
-                      }
-                      alt="shuffle">
+                    onClick={inProgress}
+                    onKeyDown={inProgress}>
+                    <svg className={styles.player__btn_shuffle_svg} alt="shuffle">
                       <use href="img/icon/sprite.svg#icon-shuffle" />
                     </svg>
                   </div>
