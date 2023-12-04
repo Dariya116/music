@@ -41,9 +41,7 @@ function Track({ author, name, album, duration_in_seconds, track_file, setOpen, 
 
   function secondsToTime() {
     const minutes = duration_in_seconds % (60 * 60);
-
     const m = Math.floor(minutes / 60);
-
     const seconds = minutes % 60;
     const s = Math.ceil(seconds);
 
