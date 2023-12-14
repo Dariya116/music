@@ -4,10 +4,12 @@ const initialState = {
   nameTrack: {},
   requestResponse:[],
   copyRequestResponse:[],
+  listTracksToPlay:[],
   urlTrack: '',
   indexTrack: 0,
   icon: false,
   pulse: false,
+  idTrack:[],
 };
 
 const songSlice = createSlice({
@@ -20,6 +22,9 @@ const songSlice = createSlice({
 
     setRequestResponse(state, action) {
       state.requestResponse = action.payload;
+    },
+    setListTracksToPlay(state, action) {
+      state.listTracksToPlay = action.payload;
     },
     setCopyRequestResponse(state, action) {
       state.copyRequestResponse = action.payload;
@@ -38,7 +43,20 @@ const songSlice = createSlice({
     setPulse(state, action) {
       state.pulse = action.payload;
     },
+    setIdTrack(state, action) {
+      state.idTrack = action.payload;
+    },
   },
 });
-export const { setNameTrack, setRequestResponse, setUrlTrack, setIndexTrack, setIcon, setPulse, setCopyRequestResponse } = songSlice.actions;
+export const {
+  setNameTrack,
+  setRequestResponse,
+  setUrlTrack,
+  setIndexTrack,
+  setIcon,
+  setPulse,
+  setCopyRequestResponse,
+  setIdTrack,
+  setListTracksToPlay,
+} = songSlice.actions;
 export default songSlice.reducer;

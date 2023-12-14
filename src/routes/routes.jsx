@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import Home from '../pages/home';
 import Register from '../pages/Register';
@@ -7,32 +7,53 @@ import Login from '../pages/login';
 import Favorites from '../pages/favorites';
 import Category from '../pages/category';
 import NotFound from '../pages/notFound';
+import Bar from '../components/Bar/Bar';
 export const userNameContext = React.createContext();
+
+
 function AppRoutes() {
   const [dataUser, setDataUser] = React.useState('');
+   const [open, setOpen] = React.useState(false);
   const [user, setUser] = React.useState(false);
+    const location = useLocation();
 React.useEffect(() => {
-  if(localStorage.getItem('user')) {
-  setUser(true);
-}
+  if (localStorage.getItem('user')) {
+    setUser(true);
+  }
+}, []);
+const showBar =
+  location.pathname.includes('category') ||
+  location.pathname === '/favorites' ||
+  location.pathname === '/';
 
-},[]);
 console.log('user:',user);
 
   return (
-    <userNameContext.Provider value={{dataUser, setDataUser}}>
+    <userNameContext.Provider value={{ dataUser, setDataUser }}>
       <Routes>
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login setUser={setUser} />} />
+        <Route path="/login" element={user ? <Navigate to="/" /> : <Login  setUser={setUser} />} />
         <Route
           path="/"
-          element={user ? <Home user={user} setUser={setUser} /> : <Navigate to="/login" replace />}
+          element={
+            user ? (
+              <Home open={open} setOpen={setOpen} user={user} setUser={setUser} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
         />
 
         <Route path="/register" element={<Register />} />
 
         <Route
           path="/favorites"
-          element={user ? <Favorites setUser={setUser} /> : <Navigate to="/login" replace />}
+          element={
+            user ? (
+              <Favorites open={open} setOpen={setOpen} setUser={setUser} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
         />
         <Route
           path="/category1"
@@ -48,6 +69,7 @@ console.log('user:',user);
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
+     { showBar &&<Bar open={open} setOpen={setOpen} />}
     </userNameContext.Provider>
   );
 }

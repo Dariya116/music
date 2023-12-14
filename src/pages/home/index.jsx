@@ -17,12 +17,12 @@ import SideBar from '../../components/Sidebar/Sidebar';
 import { setCopyRequestResponse, setRequestResponse } from '../../redux/slices/song';
 import { Filter } from '../../components/Filter/Filter';
 
-function Home({ setUser }) {
+function Home({ setUser, open, setOpen }) {
   const dispatch = useDispatch();
 
   const [loader, setLoader] = React.useState(true);
   const [items, setItems] = React.useState([]);
-  const [open, setOpen] = React.useState(false);
+ 
   const [addError, setAddError] = React.useState(null);
 
   const tracks = items.map((obj, index) => (
@@ -41,7 +41,8 @@ function Home({ setUser }) {
         setLoader(false);
         console.log(res.data);
         dispatch(setRequestResponse(res.data));
-        dispatch(setCopyRequestResponse(res.data));
+        dispatch(setCopyRequestResponse(res.data))
+        
       })
       .catch((error) => {
         console.log(error);
@@ -61,7 +62,7 @@ function Home({ setUser }) {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <Nav setUser={setUser} />
+        <Nav setUser={setUser} setOpen={setOpen} />
 
         <div className={styles.main}>
           <div className={styles.centerblock}>
@@ -90,7 +91,7 @@ function Home({ setUser }) {
             </div>
           </div>
           <div className={styles.sidebar}>
-            <SideBar setUser={setUser} />
+            <SideBar setUser={setUser} setOpen={setOpen} />
             {loaderTest()}
             {loader ? (
               <MyLoaderRight />
@@ -130,9 +131,7 @@ function Home({ setUser }) {
           </div>
         </div>
       </main>
-      <div className={styles.bar}>
-        <Bar open={open} setOpen={setOpen} />
-      </div>
+      <div className={styles.bar}>{/* <Bar open={open} setOpen={setOpen} /> */}</div>
       <footer className={styles.footer} />
     </div>
   );

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import styles from './Nav.module.scss';
 
-export default function Nav({setUser}) {
+export default function Nav({setUser, setOpen}) {
   const ref = React.useRef();
   const [burger, setBurger] = React.useState(false);
 
@@ -13,6 +13,7 @@ export default function Nav({setUser}) {
 
   const exitButton = () => {
    setUser(false);
+  setOpen(false);
    localStorage.clear();
   
   };
@@ -29,6 +30,8 @@ export default function Nav({setUser}) {
       document.removeEventListener('click', clickOutside);
     };
   }, []);
+
+  
 
   return (
     <nav className={styles.nav}>
@@ -58,7 +61,7 @@ export default function Nav({setUser}) {
                 Главное
               </Link>
             </li>
-            <li className={styles.menu__item}>
+            <li  className={styles.menu__item}>
               <Link to="/favorites" className={styles.menu__link}>
                 Мой плейлист
               </Link>

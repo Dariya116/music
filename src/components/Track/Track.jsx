@@ -3,24 +3,39 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './Track.module.scss';
 
-import { setIndexTrack, setNameTrack, setUrlTrack, setIcon, setPulse } from '../../redux/slices/song';
-
-function Track({ author, name, album, duration_in_seconds, track_file, setOpen, index }) {
+import {
+  setIndexTrack,
+  setNameTrack,
+  setUrlTrack,
+  setIcon,
+  setPulse,
+  setIdTrack,
+  setListTracksToPlay,
+} from '../../redux/slices/song';
+import { useAddFavoritesTracksMutation } from '../../redux/favoritesAPI';
+function Track({author, name, album, duration_in_seconds, track_file, id, setOpen, index }) {
   const dispatch = useDispatch();
+  const [like, setLike] = React.useState(false);
+  const [showLike, setShowLike] = React.useState(false);
   const selectedTrack = useSelector((state) => state.song.nameTrack);
   const selectedIcon = useSelector((state) => state.song.icon);
   const selectedPulse = useSelector((state) => state.song.pulse);
+const selectedIdTrack = useSelector((state) => state.song.idTrack);
+const selectedTrackToPlay = useSelector((state) => state.song.requestResponse);
 
   const ref = React.useRef();
+const [addTracks, {isError}] = useAddFavoritesTracksMutation();
 
   const clickTrack = (e) => {
     e.preventDefault();
     dispatch(setNameTrack({ name, author }));
     dispatch(setIndexTrack(index));
-    dispatch(setUrlTrack(track_file));
+    
     setOpen(true);
     dispatch(setIcon(true));
     dispatch(setPulse(true));
+dispatch(setListTracksToPlay(selectedTrackToPlay));
+dispatch(setUrlTrack(track_file));
 
     sessionStorage.setItem('url', track_file);
   };
@@ -49,6 +64,17 @@ function Track({ author, name, album, duration_in_seconds, track_file, setOpen, 
   }
   const time = secondsToTime(duration_in_seconds);
 
+  const handlLike = () => {
+   
+      setShowLike(!showLike);
+      if (!showLike) {
+        setLike(true);
+        addTracks(id);
+      }  else {
+        setLike(false);
+      }
+   
+  };
 
   return (
     <div className={styles.playlist__item}>
@@ -88,8 +114,9 @@ function Track({ author, name, album, duration_in_seconds, track_file, setOpen, 
           </a>
         </div>
         <div className={styles.track__time}>
-          <svg className={styles.track__time_svg} alt="time">
-            <use href="img/icon/sprite.svg#icon-like" />
+          <svg onClick={() => handlLike()} className={styles.track__time_svg} alt="time">
+          {!like ? 
+            <use href="img/icon/sprite.svg#icon-like" /> : <use href="img/icon/sprite.svg#icon-favorite" />}
           </svg>
           <span className={styles.track__time_text}>{time}</span>
         </div>

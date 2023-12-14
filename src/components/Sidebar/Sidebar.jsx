@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Sidebar.module.scss';
 import { userNameContext } from '../../routes/routes';
 
-function Sidebar({ setUser }) {
+function Sidebar({ setUser, setOpen }) {
   const { dataUser, setDataUser } = React.useContext(userNameContext);
 
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ function Sidebar({ setUser }) {
     setUser(false);
     localStorage.clear();
     navigate('/login');
+    setOpen(false);
   };
 
   return (

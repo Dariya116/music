@@ -10,7 +10,7 @@ import {
   setRequestResponse,
 } from '../../redux/slices/song';
 
-export default function Bar({ open}) {
+export default function Bar({ open, setOpen}) {
   const dispatch = useDispatch();
   const audioRef = React.useRef(null);
   const song = useSelector((state) => state.song.nameTrack.name);
@@ -39,6 +39,7 @@ export default function Bar({ open}) {
     setIsPlaying(false);
     dispatch(setPulse(false));
   };
+ 
 
   const togglePlay = isPlaying ? handleStop : handleStart;
   React.useEffect(() => {
@@ -46,6 +47,9 @@ export default function Bar({ open}) {
       audioRef.current.play();
       setIsPlaying(true);
       dispatch(setPulse(true));
+      // setOpen(true);
+    } else {
+      setOpen(false);
     }
   }, [song, selectedUrlTrack, selectedIndex]);
 
