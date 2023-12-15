@@ -11,23 +11,25 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 
 import { useGetFavoritesQuery } from '../../redux/favoritesAPI';
 import Track from '../../components/Track/Track';
-import { setCopyRequestResponse, setRequestResponse} from '../../redux/slices/song';
+import { setCopyRequestResponse, setRequestResponse, setListTracksToPlay} from '../../redux/slices/song';
 import { useNavigate } from 'react-router-dom';
 
 function Favorites({ setUser, open, setOpen}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [favoriteItems, setFavoriteItems] = React.useState([]);
-  const { data = [], isLoading, error, isSuccess, } = useGetFavoritesQuery();
+  const {
+    data = [],
+    isLoading,
+    error,
+    isSuccess,
+  } = useGetFavoritesQuery({}, { refetchOnMountOrArgChange: true });
   
-    React.useEffect (() => {
+    useEffect(() => {
       if (data) {
-        setFavoriteItems(data);
-        dispatch(setRequestResponse(data));
-        dispatch(setCopyRequestResponse(data));
+        dispatch(setListTracksToPlay(data));
       }
-    },[])
-  
+    }, [data]);
   
   if (isLoading) {
     console.log(isLoading);
@@ -35,12 +37,12 @@ function Favorites({ setUser, open, setOpen}) {
 
   if (error) {
     setUser(false);
-    localStorage.clear();
-    navigate("/login");
+    // localStorage.clear();
+    // navigate("/login");
 console.log(error);
   }
   console.log(data);
-  const tracksFavorite = favoriteItems.map((obj, index) => (
+  const tracksFavorite = data.map((obj, index) => (
     <Track setOpen={setOpen} key={obj.id} {...obj} index={index} />
   ));
  
