@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './login.module.scss';
+import {
+  useAddLoginMutation,
+  useAddTokenMutation,
+} from '../../redux/registrationAPI';
 
 function Login({ setUser }) {
   const [emailLogin, setEmailLogin] = useState('');
@@ -11,97 +15,73 @@ function Login({ setUser }) {
   const [passwordErrorLogin, setPasswordErrorLogin] = useState(false);
   const [blockErrorLogin, setBlockErrorLogin] = useState(false);
   const [responseErrorLogin, setResponseErrorLogin] = useState('');
+  const [responseErrorToken, setResponseErrorToken] = useState('');
 
-  console.log('responseErrorLogin', responseErrorLogin);
+  const [login, { isLoading }] = useAddLoginMutation();
+  const [token] = useAddTokenMutation();
 
   const handleInputChangeLogin = (e) => {
     const { id, value } = e.target;
     if (id === 'email') {
       setEmailLogin(value);
       setEmailErrorLogin(false);
+      setBlockErrorLogin(false);
     }
     if (id === 'password') {
       setPasswordLogin(value);
       setPasswordErrorLogin(false);
+      setBlockErrorLogin(false);
     }
   };
-  const selectedNameLogin = useSelector((state) => state.dataUser);
-  console.log(selectedNameLogin);
 
-  const sendingRequestLogin = () => {
+  const sendingRequestLogin = async () => {
     setResponseErrorLogin('');
+    setResponseErrorToken('');
+    setBlockErrorLogin(false);
     setDisabledEnter(true);
     setEmailErrorLogin(false);
     setPasswordErrorLogin(false);
-    try {
-      fetch('https://skypro-music-api.skyeng.tech/user/login/', {
-        method: 'POST',
-        body: JSON.stringify({
-          email: emailLogin,
-          password: passwordLogin,
-          username: emailLogin,
-        }),
-        headers: {
-          // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
-          'content-type': 'application/json',
-        },
-      })
-        .then((response) => {
-          setDisabledEnter(false);
-          if (!response.ok) {
-            console.log(response);
-            setUser(false);
-          }
-          return response.json();
-        })
+    const logData = {
+      email: emailLogin,
+      password: passwordLogin,
+      username: emailLogin,
+    };
 
-        .then((data) => {
-          if (data.detail) {
-            console.log('++++++++++++');
-            setResponseErrorLogin(data.detail);
-            setBlockErrorLogin(true);
-            setUser(false);
-          } else {
-            localStorage.setItem('data', data.username);
+    login(logData).then((data) => {
+      if (data.error) {
+        setBlockErrorLogin(true);
+        setResponseErrorLogin(data.error.data.detail);
+        setUser(false);
+      }
+      if (data.data) {
+        localStorage.setItem('data', data.data.username);
+        const tokenBody = { email: emailLogin, password: passwordLogin };
+        token(tokenBody).then((data) => {
+          if (data.data) {
+            console.log('token:', data.data.access);
+            localStorage.setItem('accessToken', data.data.access);
+            localStorage.setItem('refreshToken', data.data.refresh);
+            localStorage.setItem('user', true);
             setUser(true);
           }
+          if (data.error) {
+            setBlockErrorLogin(true);
+
+            setResponseErrorToken(data.error.data.detail);
+            console.log(responseErrorToken, blockErrorLogin);
+            setUser(false);
+          }
         });
-    } catch (error) {
-      console.error('Ошибка:', error);
-    }
+      }
+    });
   };
+
+ 
 
   const handleSubmitLogin = () => {
     if (emailLogin !== '' && passwordLogin !== '') {
       console.log('ok');
       sendingRequestLogin();
-
-      localStorage.setItem('user', true);
-      try {
-        fetch('https://skypro-music-api.skyeng.tech/user/token/', {
-          method: 'POST',
-          body: JSON.stringify({
-            email: emailLogin,
-            password: passwordLogin,
-          }),
-          headers: {
-            // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
-            'content-type': 'application/json',
-          },
-        })
-          .then((response) => {
-            if (!response.ok) {
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log('token:', data.access);
-            localStorage.setItem('accessToken', data.access);
-            localStorage.setItem('refreshToken', data.refresh);
-          });
-      } catch (error) {
-        console.error('Ошибка:', error);
-      }
     } else {
       if (emailLogin === '') {
         setEmailErrorLogin(true);
@@ -112,6 +92,12 @@ function Login({ setUser }) {
 
       console.log('не ок');
     }
+  };
+
+  const clickRegButton = () => {
+    localStorage.clear('accessToken');
+    localStorage.clear('refreshToken');
+    setUser(false);
   };
 
   return (
@@ -136,19 +122,22 @@ function Login({ setUser }) {
       />
       {passwordErrorLogin && <p> Не заполнен пароль</p>}
       <button
-        disabled={disabledEnter}
+        disabled={isLoading ? true : false}
         onClick={() => handleSubmitLogin()}
         className={!disabledEnter ? styles.login__button1 : styles.login__button1_active}
         type="button">
         Войти
       </button>
       <Link to="/register">
-        <button className={styles.login__button2} type="button">
+        <button onClick={() => clickRegButton()} className={styles.login__button2} type="button">
           Зарегестрироваться
         </button>
       </Link>
       {blockErrorLogin && (
-        <div className={styles.error}>{responseErrorLogin && <p>{responseErrorLogin}</p>}</div>
+        <div className={styles.error}>
+          {<p>{responseErrorLogin}</p>}
+          {<p>{responseErrorToken}</p>}
+        </div>
       )}
     </div>
   );

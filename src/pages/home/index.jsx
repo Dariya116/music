@@ -16,17 +16,35 @@ import SideBar from '../../components/Sidebar/Sidebar';
 
 import { setCopyRequestResponse, setRequestResponse } from '../../redux/slices/song';
 import { Filter } from '../../components/Filter/Filter';
+import { useGetFavoritesQuery } from '../../redux/favoritesAPI';
 
-function Home({ setUser, open, setOpen }) {
+function Home({ setUser, open, setOpen, favoritesPage, homePage, setLike, like }) {
   const dispatch = useDispatch();
 
   const [loader, setLoader] = React.useState(true);
   const [items, setItems] = React.useState([]);
- 
+  const [likeId, setLikeId] = React.useState([]);
+
   const [addError, setAddError] = React.useState(null);
+  const { data = [], isSuccess } = useGetFavoritesQuery({}, { refetchOnMountOrArgChange: true });
+
+  React.useEffect(() => {
+    isSuccess && setLikeId(data.map((el) => el.id));
+  }, [data, isSuccess]);
+
+
 
   const tracks = items.map((obj, index) => (
-    <Track setOpen={setOpen} key={obj.id} {...obj} index={index} />
+    <Track
+      setOpen={setOpen}
+      key={obj.id}
+      {...obj}
+      index={index}
+      favoritesPage={favoritesPage}
+      homePage={homePage}
+     
+     
+    />
   ));
 
   const skeletons = [...new Array(2)].map((_, index) => <MyLoader key={Math.random(index)} />);
@@ -40,9 +58,7 @@ function Home({ setUser, open, setOpen }) {
         setItems(res.data);
         setLoader(false);
         console.log(res.data);
-        dispatch(setRequestResponse(res.data));
-        dispatch(setCopyRequestResponse(res.data))
-        
+        dispatch(setCopyRequestResponse(res.data));
       })
       .catch((error) => {
         console.log(error);

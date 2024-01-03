@@ -10,7 +10,6 @@ export const favoritesApi = createApi({
       if (accessToken) {
         headers.set('Authorization', `Bearer ${accessToken}`);
       }
-
       return headers;
     },
   }),
@@ -18,12 +17,24 @@ export const favoritesApi = createApi({
     getFavorites: build.query({
       query: () => `favorite/all/`,
     }),
+
     addFavoritesTracks: build.mutation({
       query: (id) => ({
         url: `${id}/favorite/`,
         method: 'POST',
       }),
     }),
+    deleteFavoritesTracks: build.mutation({
+      query: (id) => ({
+        url: `${id}/favorite/`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
-export const { useGetFavoritesQuery, useAddFavoritesTracksMutation } = favoritesApi;
+export const {
+  useGetFavoritesQuery,
+  useAddFavoritesTracksMutation,
+  useDeleteFavoritesTracksMutation,
+  useLazyGetFavoritesQuery,
+} = favoritesApi;

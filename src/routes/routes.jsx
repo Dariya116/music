@@ -15,28 +15,46 @@ function AppRoutes() {
   const [dataUser, setDataUser] = React.useState('');
    const [open, setOpen] = React.useState(false);
   const [user, setUser] = React.useState(false);
+   const [like, setLike] = React.useState(localStorage.getItem('like'));
     const location = useLocation();
-React.useEffect(() => {
-  if (localStorage.getItem('user')) {
-    setUser(true);
-  }
-}, []);
+// React.useEffect(() => {
+//   if (localStorage.getItem('like')) {
+//     setLike(true);
+//   }
+// }, []);
+
+ 
+ React.useEffect(() => {
+   if (localStorage.getItem('user')) {
+     setUser(true);
+   }
+ }, []);
 const showBar =
   location.pathname.includes('category') ||
   location.pathname === '/favorites' ||
   location.pathname === '/';
 
 console.log('user:',user);
-
+const favoritesPage = location.pathname.includes('favorite');
+const homePage = location.pathname.includes('');
   return (
     <userNameContext.Provider value={{ dataUser, setDataUser }}>
       <Routes>
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login  setUser={setUser} />} />
+        <Route path="/login" element={user ? <Navigate to="/" /> : <Login setUser={setUser} />} />
         <Route
           path="/"
           element={
             user ? (
-              <Home open={open} setOpen={setOpen} user={user} setUser={setUser} />
+              <Home
+                open={open}
+                setOpen={setOpen}
+                user={user}
+                setUser={setUser}
+                favoritesPage={favoritesPage}
+                homePage={homePage}
+                setLike={setLike}
+                like={like}
+              />
             ) : (
               <Navigate to="/login" replace />
             )
@@ -49,7 +67,15 @@ console.log('user:',user);
           path="/favorites"
           element={
             user ? (
-              <Favorites open={open} setOpen={setOpen} setUser={setUser} />
+              <Favorites
+                open={open}
+                setOpen={setOpen}
+                setUser={setUser}
+                favoritesPage={favoritesPage}
+                homePage={homePage}
+                setLike={setLike}
+                like={like}
+              />
             ) : (
               <Navigate to="/login" replace />
             )
@@ -69,7 +95,7 @@ console.log('user:',user);
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
-     { showBar &&<Bar open={open} setOpen={setOpen} />}
+      {showBar && <Bar open={open} setOpen={setOpen} />}
     </userNameContext.Provider>
   );
 }

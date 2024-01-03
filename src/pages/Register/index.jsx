@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 import styles from './register.module.scss';
 import { userNameContext } from '../../routes/routes';
+import { useAddRegistrationMutation } from '../../redux/registrationAPI';
 
 function Register() {
-  
   const navigate = useNavigate();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -15,23 +15,28 @@ function Register() {
   const [confirmPasswordError, setConfirmPasswordError] = React.useState(false);
   const [checkedPasswordError, setCheckedPasswordError] = React.useState(false);
   const [responseError, setResponseError] = React.useState({});
-  const [disabled, setDisabled] = React.useState(false);
-  const [blockError, setBlockError] = React.useState(false);
+  const [errorBlock, setErrorBlock] = React.useState(false);
+
   const { setDataUser } = React.useContext(userNameContext);
+
+  const [registration, { isLoading }] = useAddRegistrationMutation();
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     if (id === 'email') {
       setEmail(value);
       setEmailError(false);
+      setErrorBlock(false);
     }
     if (id === 'password') {
       setPassword(value);
       setPasswordError(false);
+      setErrorBlock(false);
     }
     if (id === 'confirmPassword') {
       setConfirmPassword(value);
       setConfirmPasswordError(false);
+      setErrorBlock(false);
     }
   };
 
@@ -41,44 +46,26 @@ function Register() {
     setConfirmPasswordError(false);
     setPasswordError(false);
     setEmailError(false);
-    try {
-      setDisabled(true);
-      fetch('https://skypro-music-api.skyeng.tech/user/signup/', {
-        method: 'POST',
-        body: JSON.stringify({
-          email,
-          password,
-          username: email,
-        }),
-        headers: {
-          // API требует обязательного указания заголовка content-type, так апи понимает что мы посылаем ему json строчку в теле запроса
-          'content-type': 'application/json',
-        },
-      })
-        .then((response) => {
-          setDisabled(false);
-          if (!response.ok) {
-            console.log(response);
-          }
-          return response.json();
-        })
+    setErrorBlock(false);
 
-        .then((data) => {
-          console.log('data', data);
-          console.log(data, data.email, data.password);
+    const regData = {
+      email,
+      password,
+      username: email,
+    };
 
-          if (data && data.email && data.email.includes('@')) {
-            console.log(data.email);
-            setDataUser(localStorage.getItem('data'));
-            navigate('/login');
-          } else {
-            setResponseError(data);
-            setBlockError(true);
-          }
-        });
-    } catch (error) {
-      console.error('Ошибка:', error);
-    }
+    registration(regData).then((data) => {
+     
+      if (data.data && data.data.email && email.includes('@')) {
+        console.log(email);
+        setDataUser(localStorage.getItem('data'));
+        navigate('/login');
+      }
+      if (data.error) {
+        setResponseError(data.error.data);
+        setErrorBlock(true);
+      }
+    });
   };
 
   const handleSubmit = () => {
@@ -136,17 +123,17 @@ function Register() {
       {checkedPasswordError && <p>Не совпадает пароль </p>}
       {confirmPasswordError && <p>Не заполнен повторный пароль </p>}
       <button
-        className={!disabled ? styles.button_btn : styles.button_btn_active}
-        disabled={disabled}
+        className={!isLoading ? styles.button_btn : styles.button_btn_active}
+        disabled={isLoading ? true : false}
         onClick={() => handleSubmit()}
         type="button">
         Зарегестрироваться
       </button>
 
-      {blockError && (
-        <div className={styles.error}>
-          {responseError.email && <p>{responseError.email}</p>}
-          {responseError.password && <p>{responseError.password}</p>}
+      {errorBlock && (
+        <div className={styles.errors}>
+          {<p>{responseError.email}</p>}
+          {<p>{responseError.password}</p>}
         </div>
       )}
     </div>

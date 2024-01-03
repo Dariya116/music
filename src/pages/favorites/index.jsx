@@ -14,7 +14,7 @@ import Track from '../../components/Track/Track';
 import { setCopyRequestResponse, setRequestResponse, setListTracksToPlay} from '../../redux/slices/song';
 import { useNavigate } from 'react-router-dom';
 
-function Favorites({ setUser, open, setOpen}) {
+function Favorites({ setUser, open, setOpen, favoritesPage, homePage, setLike, like }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [favoriteItems, setFavoriteItems] = React.useState([]);
@@ -24,28 +24,38 @@ function Favorites({ setUser, open, setOpen}) {
     error,
     isSuccess,
   } = useGetFavoritesQuery({}, { refetchOnMountOrArgChange: true });
-  
-    useEffect(() => {
-      if (data) {
-        dispatch(setListTracksToPlay(data));
-      }
-    }, [data]);
-  
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setListTracksToPlay(data));
+    }
+  }, [data]);
+
   if (isLoading) {
     console.log(isLoading);
   }
 
   if (error) {
     setUser(false);
-    // localStorage.clear();
-    // navigate("/login");
-console.log(error);
+
+    navigate('/login');
+    localStorage.clear('accessToken');
+    localStorage.clear('refreshToken');
   }
   console.log(data);
   const tracksFavorite = data.map((obj, index) => (
-    <Track setOpen={setOpen} key={obj.id} {...obj} index={index} />
+    <Track
+      setOpen={setOpen}
+      key={obj.id}
+      {...obj}
+      index={index}
+      favoritesPage={favoritesPage}
+      homePage={homePage}
+      setLike={setLike}
+      like={like}
+    />
   ));
- 
+
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -79,9 +89,7 @@ console.log(error);
         </div>
       </main>
 
-      <div className={styles.bar}>
-        {/* <Bar open={open} setOpen={setOpen} /> */}
-      </div>
+      <div className={styles.bar}>{/* <Bar open={open} setOpen={setOpen} /> */}</div>
       <footer className={styles.footer} />
     </div>
   );
